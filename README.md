@@ -5,35 +5,69 @@
 
 Library to build your POJO entities in a very easy and builder intuitive way.
 
-## Motivation
-Most of the time when I am writting my tests I have the need to write clean and readable tests. One way that I found is by having Test Builder but normally it takes time and are difficult to mantain in time. So after looking around I came up with this library to help you to create your pojo in a different and easy way.
+# Motivation
+Most of the time when I am writing my tests I have the need to write clean and readable tests. One way that I found is by having Test Builder but normally it takes time and are difficult to mantain in time. So after looking around I came up with this library to help you to create your pojo in a different and easy way.
 
-## How to use it
-the library provides a nice DSL to create your Builders. you only need two steps to have your builder.
-Just by adding as a dependency you will be able to get your builder in short time.
+# How to use it.
 
-### Step 1: 
-Write your creator class, this class will be use by the Builder class to create the instance and inject the field values that you want to populate in your pojo.
+There are several ways to use it but the most flexible for me is creating a Class Builder that contains all the logic to create the objects.
+The same example you can find in the lib tests.
 
 ```java
-public class PojoCreator extends Creator<Pojo> {
+public class PojoBuilder {
 
-    @Override
-    public Pojo build() {
-        return new Pojo(lookup("name", "defaultName"),
-                        lookup("value", "defaultValue"));
-    }
+    public static Field<String> name = new Field<>();
+    public static Field<String> value = new Field<>();
+
+    public static Field<String> name2 = new Field<>("defaultName");
+    public static Field<String> value2 = new Field<>("defaultValue");
+
+    public static Creator<Pojo> creator = lookUp -> new Pojo(lookUp.get(name, "defaultName"),
+            lookUp.get(value, "defaultValue"));
+
+    public static Creator<Pojo> creatorWithPredefinedDefaults = lookUp -> new Pojo(lookUp.get(name2),
+            lookUp.get(value2));
 
 }
 ```
-### Step 2:
-Build your instance by using the following line:
+There many things going on there. but I will try to explain it in the best way that I can.
+There are two concepts to keep in mind, Field, Creator and LookUp.
+
+## Creator
+The Creator implements method build that should contains how the object is going to be build.
+
+## Field
+The Field represent the value that you want to change by using the DSL in the construction of your objects.
+
+## LookUp 
+In charge of binding the Field instance and getting the corresponding value in the creator class.
+
+In the example above the Creator is building a pojo using the constructor method and it is using the lookUp instance to get the corresponding value.
+
+## Ways of using the the three things.
 
 ```java
-Pojo instance = Builder.build().entity(new PojoCreator()).get();
+public static Field<String> name = new Field<>();
+public static Field<String> value = new Field<>();
+
+new Pojo(lookUp.get(name, "defaultName"), 
+            lookUp.get(value, "defaultValue")
 ```
-you can override the default value by using the method with:
+the lookUp method is using a Field instance as first parameter and the second parameter to define what the default value will be in case that we don't set it by the DSL.
+The other way to set the default value is by setting at the construction of the field it self so at the lookUp level you don't have to pass it.
 
 ```java
-Pojo instance = Builder.build().entity(new PojoCreator()).with("name", "test1").get();
+public static Field<String> name2 = new Field<>("defaultName");
+public static Field<String> value2 = new Field<>("defaultValue");
+
+new Pojo(lookUp.get(name2),
+            lookUp.get(value2));
 ```
+
+# Credits
+the library is inspired by 
+
+https://github.com/npryce/make-it-easy
+
+it provides Hamcrest DSL style but I am more fun of using a builder kind of DSL like AssertJ that offers straight away the option that I can use.
+I want to say thank you to all the collaborator of MakeItEasy project.

@@ -10,15 +10,15 @@ class EntityBuilderTest {
 
     @Test
     public void shouldBuild() {
-        EntityBuilder entityBuilder = EntityBuilder.entityBuilder(new PojoCreator());
-        EntityBuilder entityBuilder2 = EntityBuilder.entityBuilder(new PojoCreator());
+        EntityBuilder entityBuilder = EntityBuilder.entityBuilder(PojoCreator.creator);
+        EntityBuilder entityBuilder2 = EntityBuilder.entityBuilder(PojoCreator.creator);
 
         assertThat(entityBuilder).isNotEqualTo(entityBuilder2);
     }
 
     @Test
     public void shouldGetEntityUsingDefaultValues() {
-        Pojo pojo = EntityBuilder.entityBuilder(new PojoCreator()).get();
+        Pojo pojo = EntityBuilder.entityBuilder(PojoCreator.creator).get();
 
         assertThat(pojo.getName()).isEqualTo("defaultName");
         assertThat(pojo.getValue()).isEqualTo("defaultValue");
@@ -26,9 +26,12 @@ class EntityBuilderTest {
 
     @Test
     public void shouldBindValueAndNotUseDefault() {
-        Pojo pojo = EntityBuilder.entityBuilder(new PojoCreator()).with("name", "newname").get();
+        Pojo pojo = EntityBuilder.entityBuilder(PojoCreator.creator)
+                .override(PojoCreator.name, "newNAme")
+                .override(PojoCreator.value, "newValue")
+                .get();
 
-        assertThat(pojo.getName()).isEqualTo("newname");
-        assertThat(pojo.getValue()).isEqualTo("defaultValue");
+        assertThat(pojo.getName()).isEqualTo("newNAme");
+        assertThat(pojo.getValue()).isEqualTo("newValue");
     }
 }

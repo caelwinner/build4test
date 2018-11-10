@@ -18,8 +18,8 @@ class BuilderTest {
 
     @Test
     public void shouldUseDefaultEntity() {
-        EntityBuilder entityBuilder = build().entity(new PojoCreator());
-        EntityBuilder entityBuilder2 = build().entity(new PojoCreator());
+        EntityBuilder entityBuilder = build().entity(PojoCreator.creator);
+        EntityBuilder entityBuilder2 = build().entity(PojoCreator.creator);
 
         assertThat(entityBuilder).isNotEqualTo(entityBuilder2);
     }

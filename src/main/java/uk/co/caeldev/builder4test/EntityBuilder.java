@@ -2,25 +2,24 @@ package uk.co.caeldev.builder4test;
 
 public class EntityBuilder<K> {
 
-    private final Lookup lookup;
     private final Creator<K> creator;
+    private final LookUp lookUp;
 
     EntityBuilder(Creator<K> creator) {
         this.creator = creator;
-        this.lookup = new Lookup();
+        this.lookUp = new LookUp();
     }
 
     static <T> EntityBuilder<T> entityBuilder(Creator<T> Creator) {
         return new EntityBuilder<>(Creator);
     }
 
-    public <V> EntityBuilder<K> with(String fieldName, V value) {
-        lookup.add(new Value<>(fieldName, value));
+    public <V> EntityBuilder<K> override(Field<V> field, V value) {
+        lookUp.put(field, value);
         return this;
     }
 
     public K get() {
-        creator.initializeLookup(lookup);
-        return creator.build();
+        return creator.build(lookUp);
     }
 }
