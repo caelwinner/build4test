@@ -5,7 +5,7 @@ import uk.co.caeldev.builder4test.Builder;
 import uk.co.caeldev.builder4test.impl.Pojo;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.caeldev.builder4test.impl.PojoCreator.*;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
 
 public class BuilderIntegrationTest {
 

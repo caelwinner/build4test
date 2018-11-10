@@ -3,7 +3,7 @@ package uk.co.caeldev.builder4test.impl;
 import uk.co.caeldev.builder4test.Creator;
 import uk.co.caeldev.builder4test.Field;
 
-public class PojoCreator {
+public class PojoBuilder {
 
     public static Field<String> name = new Field<>();
     public static Field<String> value = new Field<>();

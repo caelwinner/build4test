@@ -1,7 +1,7 @@
 package uk.co.caeldev.builder4test;
 
 import org.junit.jupiter.api.Test;
-import uk.co.caeldev.builder4test.impl.PojoCreator;
+import uk.co.caeldev.builder4test.impl.PojoBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.caeldev.builder4test.Builder.build;
@@ -18,8 +18,8 @@ class BuilderTest {
 
     @Test
     public void shouldUseDefaultEntity() {
-        EntityBuilder entityBuilder = build().entity(PojoCreator.creator);
-        EntityBuilder entityBuilder2 = build().entity(PojoCreator.creator);
+        EntityBuilder entityBuilder = build().entity(PojoBuilder.creator);
+        EntityBuilder entityBuilder2 = build().entity(PojoBuilder.creator);
 
         assertThat(entityBuilder).isNotEqualTo(entityBuilder2);
     }
