@@ -14,6 +14,10 @@ public class LookUp {
         this.values = new HashMap<>();
     }
 
+    protected LookUp(Map<Field, Optional> values) {
+        this.values = values;
+    }
+
     protected <V> void put(Field<V> field, V value) {
         values.put(field, Optional.ofNullable(value));
     }

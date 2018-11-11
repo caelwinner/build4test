@@ -44,7 +44,7 @@ In charge of binding the Field instance and getting the corresponding value in t
 
 In the example above the Creator is building a pojo using the constructor method and it is using the lookUp instance to get the corresponding value.
 
-## Ways of using the the three things
+## Build an entity
 
 ```java
 public static Field<String> name = new Field<>();
@@ -63,10 +63,7 @@ public static Field<String> value2 = new Field<>("defaultValue");
 new Pojo(lookUp.get(name2),
             lookUp.get(value2));
 ```
-
-## How your tests would look like
-
-At the end you would use this from tests like this:
+and below is the code to generate your pojo.
 
 ```java
 Pojo pojo = Builder.build()
@@ -74,6 +71,23 @@ Pojo pojo = Builder.build()
                 .override(PojoBuilder.name, "nameoverrideed")
                 .override(PojoBuilder.value, "valueoverrided")
                 .get();
+```
+
+## Build a list of entities
+
+As easy as creating an entity, just use list method from the DSL and add as many elements to the collection as you want. For each element you can define a the fields that you want to override.
+In the example below we are creating a list of two elements overriding the fiend name.
+ 
+```java
+List<Pojo> testSiumple = Builder.build()
+    .list(creator)
+        .element()
+            .field(name, "testSiumple")
+            .end()
+        .element()
+            .field(name, "testSiumple2")
+        .end()
+    .get();
 ```
 
 ## Credits

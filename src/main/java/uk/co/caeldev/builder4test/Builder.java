@@ -12,4 +12,10 @@ public class Builder {
     public <K> EntityBuilder<K> entity(Creator<K> creator) {
         return EntityBuilder.entityBuilder(creator);
     }
+
+    public <K> ListBuilder<K> list(Creator<K> creator) {
+        return ListBuilder.listBuilder(creator);
+    }
+
+
 }

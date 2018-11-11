@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import uk.co.caeldev.builder4test.Builder;
 import uk.co.caeldev.builder4test.impl.Pojo;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
 
@@ -95,5 +97,34 @@ public class BuilderIntegrationTest {
         //Then
         assertThat(pojo.getName()).isNull();
         assertThat(pojo.getValue()).isNull();
+    }
+
+    @Test
+    public void shouldBuildAListOfTwoEntities() {
+
+        //When
+        List<Pojo> testSiumple = Builder.build()
+                .list(creator)
+                    .element()
+                        .field(name, "testSiumple")
+                        .end()
+                    .element()
+                        .field(name, "testSiumple2")
+                    .end()
+                .get();
+
+        //Then
+        assertThat(testSiumple).isNotEmpty();
+        assertThat(testSiumple).hasSize(2);
+
+        //And
+        Pojo pojo = testSiumple.get(0);
+        assertThat(pojo.getName()).isEqualTo("testSiumple");
+        assertThat(pojo.getValue()).isEqualTo("defaultValue");
+
+        //And
+        Pojo pojo1 = testSiumple.get(1);
+        assertThat(pojo1.getName()).isEqualTo("testSiumple2");
+        assertThat(pojo1.getValue()).isEqualTo("defaultValue");
     }
 }
