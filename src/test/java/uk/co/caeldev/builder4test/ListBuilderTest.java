@@ -26,7 +26,7 @@ class ListBuilderTest {
         List<Pojo> pojos = ListBuilder.listBuilder(PojoBuilder.creator).get();
 
         //Then
-        assertThat(pojos).isEmpty();;
+        assertThat(pojos).isEmpty();
     }
 
     @Test
