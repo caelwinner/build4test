@@ -33,4 +33,7 @@ public class ListBuilder<K> {
                 .collect(Collectors.toList());
     }
 
+    public RandomListBuilder<K> size(int size) {
+        return RandomListBuilder.randomListBuilder(size, creator);
+    }
 }

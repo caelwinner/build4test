@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
+import static uk.org.fyodor.generators.RDG.string;
 
 public class BuilderIntegrationTest {
 
@@ -126,5 +127,26 @@ public class BuilderIntegrationTest {
         Pojo pojo1 = testSiumple.get(1);
         assertThat(pojo1.getName()).isEqualTo("testSiumple2");
         assertThat(pojo1.getValue()).isEqualTo("defaultValue");
+    }
+
+    @Test
+    public void shouldBuildAListOfTwoUsingGenerators() {
+        //Given
+        int size = 2;
+
+        //When
+        List<Pojo> testSimple = Builder.build()
+                .list(creator)
+                .size(size)
+                .override(name, string())
+                .override(value, string())
+                .get();
+
+        //Then
+        assertThat(testSimple).isNotEmpty();
+        assertThat(testSimple).hasSize(size);
+
+        assertThat(testSimple.get(0).getName()).isNotEqualTo(testSimple.get(1).getName());
+        assertThat(testSimple.get(0).getValue()).isNotEqualTo(testSimple.get(1).getValue());
     }
 }

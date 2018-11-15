@@ -10,12 +10,17 @@ public class EntityBuilder<K> {
 
     private EntityBuilder(Creator<K> creator) {
         this.creator = creator;
-        this.lookUp = new LookUp();
+        this.lookUp = new DefaultLookUp();
     }
 
     private EntityBuilder(Creator<K> creator, Map<Field, Optional> fields) {
         this.creator = creator;
-        this.lookUp = new LookUp(fields);
+        this.lookUp = new DefaultLookUp(fields);
+    }
+
+    private EntityBuilder(Creator<K> creator, LookUp lookUp) {
+        this.creator = creator;
+        this.lookUp = lookUp;
     }
 
     protected static <T> EntityBuilder<T> entityBuilder(Creator<T> Creator, Map<Field, Optional> fields) {
@@ -24,6 +29,10 @@ public class EntityBuilder<K> {
 
     protected static <T> EntityBuilder<T> entityBuilder(Creator<T> Creator) {
         return new EntityBuilder<>(Creator);
+    }
+
+    protected static <T> EntityBuilder<T> entityBuilder(Creator<T> Creator, LookUp lookUp) {
+        return new EntityBuilder<>(Creator, lookUp);
     }
 
     public <V> EntityBuilder<K> override(Field<V> field, V value) {

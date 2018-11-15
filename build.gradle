@@ -24,11 +24,14 @@ repositories {
 
 dependencies {
     implementation "ch.qos.logback:logback-classic:1.2.1"
-
+    implementation "uk.org.fyodor:fyodor-core:1.0.0"
+    implementation "com.google.guava:guava:27.0-jre"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.2.0"
     testImplementation "org.assertj:assertj-core:3.10.0"
-    testImplementation "uk.org.fyodor:fyodor-core:1.0.0"
+
+    testImplementation "org.assertj:assertj-core:3.10.0"
+
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.2.0"
 }
 

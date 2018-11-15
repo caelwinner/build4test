@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LookUpTest {
+class DefaultLookUpTest {
 
-    private LookUp lookUp;
+    private DefaultLookUp defaultLookUp;
 
     @BeforeEach
     public void setUp() {
-        this.lookUp = new LookUp();
+        this.defaultLookUp = new DefaultLookUp();
     }
 
     @Test
@@ -20,10 +20,10 @@ class LookUpTest {
         Field<String> field = new Field<>();
 
         //When
-        lookUp.put(field, "defaultValue");
+        defaultLookUp.put(field, "defaultValue");
 
         //Then
-        String value = lookUp.get(field);
+        String value = defaultLookUp.get(field);
         assertThat(value).isEqualTo("defaultValue");
     }
 
@@ -33,10 +33,10 @@ class LookUpTest {
         Field<String> field = new Field<>();
 
         //And
-        lookUp.put(field, "defaultValue");
+        defaultLookUp.put(field, "defaultValue");
 
         //When
-        String value = lookUp.get(field, "defaultValue");
+        String value = defaultLookUp.get(field, "defaultValue");
 
         //Then
         assertThat(value).isEqualTo("defaultValue");
@@ -48,7 +48,7 @@ class LookUpTest {
         Field<String> field = new Field<>();
 
         //When
-        String value = lookUp.get(field, "defaultValue");
+        String value = defaultLookUp.get(field, "defaultValue");
 
         //Then
         assertThat(value).isEqualTo("defaultValue");
@@ -60,10 +60,10 @@ class LookUpTest {
         Field<String> field = new Field<>();
 
         //And
-        lookUp.put(field, null);
+        defaultLookUp.put(field, null);
 
         //When
-        String value = lookUp.get(field, "defaultValue");
+        String value = defaultLookUp.get(field, "defaultValue");
 
         //Then
         assertThat(value).isNull();
@@ -75,7 +75,7 @@ class LookUpTest {
         Field<String> field = new Field<>();
 
         //When
-        String value = lookUp.get(field, null);
+        String value = defaultLookUp.get(field, null);
 
         //Then
         assertThat(value).isNull();
@@ -87,7 +87,7 @@ class LookUpTest {
         Field<String> field = new Field<>("defaultValue");
 
         //When
-        String value = lookUp.get(field);
+        String value = defaultLookUp.get(field);
 
         //Then
         assertThat(value).isEqualTo("defaultValue");
@@ -99,7 +99,7 @@ class LookUpTest {
         Field<String> field = new Field<>();
 
         //When
-        String value = lookUp.get(field);
+        String value = defaultLookUp.get(field);
 
         //Then
         assertThat(value).isNull();
@@ -111,7 +111,7 @@ class LookUpTest {
         Field<String> field = new Field<>("defaultValue");
 
         //When
-        String value = lookUp.get(field, "defaultValueOverride");
+        String value = defaultLookUp.get(field, "defaultValueOverride");
 
         //Then
         assertThat(value).isEqualTo("defaultValueOverride");
