@@ -91,10 +91,25 @@ List<Pojo> testSiumple = Builder.build()
     .get();
 ```
 
+Also if you want to generate a certain amount of elements using the defaults values or random now it is supported.
+
+```java
+List<Pojo> testSimple = Builder.build()
+                .list(creator)
+                .size(5)
+                .override(name, RDG.string())
+                .override(value, RDG.string())
+                .get();
+```
+This code will generate a List of five elements and each element will contain a random value and field.
+Using defaults generator provided by Fyodor is easy to generate your random values. 
+
 ## Credits
 The library is highly inspired by 
 
 [Make it Easy](https://github.com/npryce/make-it-easy) And [AssertJ](https://github.com/joel-costigliola/assertj-core)
+
+For the random generation we decided to use [Fyodor](https://github.com/fyodor-org-uk/fyodor)
 
 Make It Ease lib provides a Hamcrest style DSL but I am more fun of using a builder kind of DSL like AssertJ that offers straight away the option that I can use.
 I want to say thank you to all the collaborator of MakeItEasy project.
