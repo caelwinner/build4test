@@ -2,7 +2,7 @@ package uk.co.caeldev.builder4test;
 
 public class Builder {
 
-    Builder() {
+    private Builder() {
     }
 
     public static Builder build() {

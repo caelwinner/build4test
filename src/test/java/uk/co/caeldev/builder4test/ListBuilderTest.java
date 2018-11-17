@@ -34,7 +34,7 @@ class ListBuilderTest {
         //When
         List<Pojo> pojos = ListBuilder.listBuilder(PojoBuilder.creator)
                 .element()
-                    .field(PojoBuilder.name, "test")
+                    .override(PojoBuilder.name, "test")
                     .end()
                 .get();
         //Then
@@ -52,12 +52,12 @@ class ListBuilderTest {
         //When
         List<Pojo> pojos = ListBuilder.listBuilder(PojoBuilder.creator)
                 .element()
-                    .field(PojoBuilder.name, "test1")
-                    .field(PojoBuilder.value, "testValue1")
+                    .override(PojoBuilder.name, "test1")
+                    .override(PojoBuilder.value, "testValue1")
                     .end()
                 .element()
-                    .field(PojoBuilder.name, "test2")
-                    .field(PojoBuilder.value, "testValue2")
+                    .override(PojoBuilder.name, "test2")
+                    .override(PojoBuilder.value, "testValue2")
                     .end()
                 .get();
 

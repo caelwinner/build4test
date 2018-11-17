@@ -24,7 +24,7 @@ public class RandomListBuilder<K> {
 
     }
 
-    public static <U> RandomListBuilder<U> randomListBuilder(int size, Creator<U> creator) {
+    protected static <U> RandomListBuilder<U> randomListBuilder(int size, Creator<U> creator) {
         return new RandomListBuilder<>(size, creator);
     }
 

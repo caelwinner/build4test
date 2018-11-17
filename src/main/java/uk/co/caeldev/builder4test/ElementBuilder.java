@@ -17,7 +17,7 @@ public class ElementBuilder<K> {
         return new ElementBuilder<>(listBuilder);
     }
 
-    public <U> ElementBuilder<K> field(Field<U> field, U value) {
+    public <U> ElementBuilder<K> override(Field<U> field, U value) {
         this.fields.put(field, Optional.ofNullable(value));
         return this;
     }

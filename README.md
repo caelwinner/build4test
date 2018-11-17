@@ -83,10 +83,10 @@ In the example below we are creating a list of two elements overriding the fiend
 List<Pojo> testSiumple = Builder.build()
     .list(creator)
         .element()
-            .field(name, "testSiumple")
+            .override(name, "testSiumple")
             .end()
         .element()
-            .field(name, "testSiumple2")
+            .override(name, "testSiumple2")
             .end()
     .get();
 ```
