@@ -1,79 +1,34 @@
 package uk.co.caeldev.builder4test;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import uk.co.caeldev.builder4test.impl.Pojo;
 import uk.co.caeldev.builder4test.impl.PojoBuilder;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ListBuilderTest {
 
     @Test
-    public void shouldBuilderDifferentBuilders() {
+    @DisplayName("Should Create two different instance of ElementListBuilder")
+    public void shouldCreateDistinctElementsBuilder() {
         //When
-        ListBuilder<Pojo> pojoListBuilder = ListBuilder.listBuilder(PojoBuilder.creator);
-        ListBuilder<Pojo> pojoListBuilder2 = ListBuilder.listBuilder(PojoBuilder.creator);
+        ElementListBuilder<Pojo> elements = ListBuilder.listBuilder(PojoBuilder.creator).elements();
+        ElementListBuilder<Pojo> elements2 = ListBuilder.listBuilder(PojoBuilder.creator).elements();
 
         //Then
-        assertThat(pojoListBuilder).isNotEqualTo(pojoListBuilder2);
+        assertThat(elements).isNotEqualTo(elements2);
     }
 
     @Test
-    public void shouldBuildEmptyList() {
+    @DisplayName("Should Create two different instance of FixedSizeListBuilder")
+    public void shouldCreateDistinctFixedSizeListBuilder() {
         //When
-        List<Pojo> pojos = ListBuilder.listBuilder(PojoBuilder.creator).get();
+        FixedSizeListBuilder<Pojo> fixedSizeListBuilder = ListBuilder.listBuilder(PojoBuilder.creator).size(1);
+        FixedSizeListBuilder<Pojo> fixedSizeListBuilder2 = ListBuilder.listBuilder(PojoBuilder.creator).size(1);
 
         //Then
-        assertThat(pojos).isEmpty();
-    }
-
-    @Test
-    public void shouldBuildListWithOneElement() {
-        //When
-        List<Pojo> pojos = ListBuilder.listBuilder(PojoBuilder.creator)
-                .element()
-                    .override(PojoBuilder.name, "test")
-                    .end()
-                .get();
-        //Then
-        assertThat(pojos).isNotEmpty();
-        assertThat(pojos).hasSize(1);
-
-        //And
-        Pojo pojo = pojos.get(0);
-        assertThat(pojo.getName()).isEqualTo("test");
-        assertThat(pojo.getValue()).isEqualTo("defaultValue");
-    }
-
-    @Test
-    public void shouldBuildListWithTwoElements() {
-        //When
-        List<Pojo> pojos = ListBuilder.listBuilder(PojoBuilder.creator)
-                .element()
-                    .override(PojoBuilder.name, "test1")
-                    .override(PojoBuilder.value, "testValue1")
-                    .end()
-                .element()
-                    .override(PojoBuilder.name, "test2")
-                    .override(PojoBuilder.value, "testValue2")
-                    .end()
-                .get();
-
-        //Then
-        assertThat(pojos).isNotEmpty();
-        assertThat(pojos).hasSize(2);
-
-        //And
-        Pojo pojo = pojos.get(0);
-        assertThat(pojo.getName()).isEqualTo("test1");
-        assertThat(pojo.getValue()).isEqualTo("testValue1");
-
-        //And
-        Pojo pojo1 = pojos.get(1);
-        assertThat(pojo1.getName()).isEqualTo("test2");
-        assertThat(pojo1.getValue()).isEqualTo("testValue2");
+        assertThat(fixedSizeListBuilder).isNotEqualTo(fixedSizeListBuilder2);
     }
 
 }

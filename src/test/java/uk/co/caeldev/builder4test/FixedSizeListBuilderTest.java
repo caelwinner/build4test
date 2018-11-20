@@ -9,13 +9,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
 import static uk.org.fyodor.generators.RDG.string;
 
-class RandomListBuilderTest {
+class FixedSizeListBuilderTest {
     
     @Test
     public void shouldReturnUniqueInstances() {
         //When
-        RandomListBuilder<Pojo> builder1 = RandomListBuilder.randomListBuilder(1, creator);
-        RandomListBuilder<Pojo> builder2 = RandomListBuilder.randomListBuilder(1, creator);
+        FixedSizeListBuilder<Pojo> builder1 = FixedSizeListBuilder.fixedSizeListBuilder(1, creator);
+        FixedSizeListBuilder<Pojo> builder2 = FixedSizeListBuilder.fixedSizeListBuilder(1, creator);
 
         //Then
         assertThat(builder1).isNotEqualTo(builder2);
@@ -24,7 +24,7 @@ class RandomListBuilderTest {
     @Test
     public void shouldBuildAListWithDefaultValuesNoRandoms() {
         //When
-        RandomListBuilder<Pojo> builder = RandomListBuilder.randomListBuilder(2, creator);
+        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator);
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -38,7 +38,7 @@ class RandomListBuilderTest {
     @Test
     public void shouldBuildAListWithOverrideConstantValues() {
         //When
-        RandomListBuilder<Pojo> builder = RandomListBuilder.randomListBuilder(2, creator)
+        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
                 .override(name, "testName").override(value, "testValue");
         List<Pojo> pojos = builder.get();
 
@@ -53,7 +53,7 @@ class RandomListBuilderTest {
     @Test
     public void shouldBuildAListWithOverrideConstantAndRandomValues() {
         //When
-        RandomListBuilder<Pojo> builder = RandomListBuilder.randomListBuilder(2, creator)
+        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
                 .override(name, "testName").override(value, string());
         List<Pojo> pojos = builder.get();
 
@@ -69,7 +69,7 @@ class RandomListBuilderTest {
     @Test
     public void shouldBuildAListWithOverrideRandomValues() {
         //When
-        RandomListBuilder<Pojo> builder = RandomListBuilder.randomListBuilder(2, creator)
+        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
                 .override(name, string()).override(value, string());
         List<Pojo> pojos = builder.get();
 

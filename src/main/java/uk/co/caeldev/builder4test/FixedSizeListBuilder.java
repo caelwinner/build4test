@@ -9,14 +9,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RandomListBuilder<K> {
+public class FixedSizeListBuilder<K> {
 
     private final int size;
     private final Creator<K> creator;
     private final Map<Field, Generator> generators;
     private final Map<Field, Optional> values;
 
-    private RandomListBuilder(int size, Creator<K> creator) {
+    private FixedSizeListBuilder(int size, Creator<K> creator) {
         this.size = size;
         this.creator = creator;
         values = new HashMap<>();
@@ -24,16 +24,16 @@ public class RandomListBuilder<K> {
 
     }
 
-    protected static <U> RandomListBuilder<U> randomListBuilder(int size, Creator<U> creator) {
-        return new RandomListBuilder<>(size, creator);
+    protected static <U> FixedSizeListBuilder<U> fixedSizeListBuilder(int size, Creator<U> creator) {
+        return new FixedSizeListBuilder<>(size, creator);
     }
 
-    public <U> RandomListBuilder<K> override(Field<U> field, Generator<U> generator) {
+    public <U> FixedSizeListBuilder<K> override(Field<U> field, Generator<U> generator) {
         generators.put(field, generator);
         return this;
     }
 
-    public <U> RandomListBuilder<K> override(Field<U> field, U value) {
+    public <U> FixedSizeListBuilder<K> override(Field<U> field, U value) {
         values.put(field, Optional.of(value));
         return this;
     }

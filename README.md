@@ -81,7 +81,7 @@ In the example below we are creating a list of two elements overriding the fiend
  
 ```java
 List<Pojo> testSiumple = Builder.build()
-    .list(creator)
+    .list(creator).elements()
         .element()
             .override(name, "testSiumple")
             .end()

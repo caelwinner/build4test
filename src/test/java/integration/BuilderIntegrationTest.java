@@ -118,12 +118,13 @@ public class BuilderIntegrationTest {
             //When
             List<Pojo> testSiumple = Builder.build()
                     .list(creator)
-                    .element()
-                    .override(name, "testSiumple")
-                    .end()
-                    .element()
-                    .override(name, "testSiumple2")
-                    .end()
+                    .elements()
+                        .element()
+                            .override(name, "testSiumple")
+                            .end()
+                        .element()
+                            .override(name, "testSiumple2")
+                            .end()
                     .get();
 
             //Then
@@ -164,12 +165,11 @@ public class BuilderIntegrationTest {
         }
 
         @Test
-        @DisplayName("should build a list of one element using defaults values when there is no size or element definitions")
+        @DisplayName("should build a list of one elements using defaults values when there is no size or elements definitions")
         public void shouldBuildAListSizeOneWithNoSizeAndNoElementsDefinitions() {
             //When
             List<Pojo> testSimple = Builder.build()
-                    .list(creator)
-                    .get();
+                    .list(creator).elements().get();
 
             //Then
             assertThat(testSimple).isNotEmpty();

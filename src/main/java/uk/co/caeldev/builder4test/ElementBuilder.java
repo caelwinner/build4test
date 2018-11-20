@@ -5,16 +5,20 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ElementBuilder<K> {
-    private final ListBuilder<K> listBuilder;
+    private final ElementListBuilder<K> elementListBuilder;
     private final Map<Field, Optional> fields;
 
-    private ElementBuilder(ListBuilder<K> listBuilder) {
-        this.listBuilder = listBuilder;
+    private ElementBuilder(ElementListBuilder<K> elementListBuilder) {
+        this.elementListBuilder = elementListBuilder;
         this.fields = new HashMap<>();
     }
 
-    protected static <V> ElementBuilder<V> elementBuilder(ListBuilder<V> listBuilder) {
-        return new ElementBuilder<>(listBuilder);
+    public static <U> ElementBuilder<U> elementBuilder(ElementListBuilder<U> elementListBuilder) {
+        return new ElementBuilder<>(elementListBuilder);
+    }
+
+    protected Map<Field, Optional> getFields() {
+        return this.fields;
     }
 
     public <U> ElementBuilder<K> override(Field<U> field, U value) {
@@ -22,11 +26,7 @@ public class ElementBuilder<K> {
         return this;
     }
 
-    protected Map<Field, Optional> getFields() {
-        return this.fields;
-    }
-
-    public ListBuilder<K> end() {
-        return listBuilder;
+    public ElementListBuilder<K> end() {
+        return elementListBuilder;
     }
 }
