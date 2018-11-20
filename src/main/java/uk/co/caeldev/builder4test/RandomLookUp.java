@@ -8,7 +8,7 @@ import java.util.Optional;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-public class RandomLookUp implements LookUp {
+public class RandomLookUp extends LookUp {
 
     private Map<Field, Optional> values;
     private Map<Field, Generator> generators;
@@ -19,7 +19,7 @@ public class RandomLookUp implements LookUp {
     }
 
     @Override
-    public <V> void put(Field<V> field, V value) {
+    protected <V> void put(Field<V> field, V value) {
         values.put(field, Optional.ofNullable(value));
     }
 

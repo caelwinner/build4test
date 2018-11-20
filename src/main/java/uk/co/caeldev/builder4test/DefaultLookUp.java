@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import static java.util.Objects.isNull;
 
-public class DefaultLookUp implements LookUp {
+public class DefaultLookUp extends LookUp {
 
     private Map<Field, Optional> values;
 
@@ -19,7 +19,7 @@ public class DefaultLookUp implements LookUp {
     }
 
     @Override
-    public <V> void put(Field<V> field, V value) {
+    protected <V> void put(Field<V> field, V value) {
         values.put(field, Optional.ofNullable(value));
     }
 

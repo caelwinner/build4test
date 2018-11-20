@@ -1,5 +1,7 @@
 package uk.co.caeldev.builder4test;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,11 @@ public class ListBuilder<K> {
     }
 
     public List<K> get() {
+
+        if (elements.isEmpty()) {
+            return Lists.newArrayList(EntityBuilder.entityBuilder(creator).get());
+        }
+
         return elements.stream()
                 .filter(it -> it.size() != 0)
                 .map(it -> EntityBuilder.entityBuilder(creator, it).get())
