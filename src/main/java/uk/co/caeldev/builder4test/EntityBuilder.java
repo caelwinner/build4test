@@ -40,6 +40,11 @@ public class EntityBuilder<K> {
         return this;
     }
 
+    public <V> EntityBuilder<K> nullify(Field<V> field) {
+        lookUp.put(field, null);
+        return this;
+    }
+
     public K get() {
         return creator.build(lookUp);
     }

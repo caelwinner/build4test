@@ -26,6 +26,11 @@ public class ElementBuilder<K> {
         return this;
     }
 
+    public <U> ElementBuilder<K> nullify(Field<U> field) {
+        this.fields.put(field, Optional.empty());
+        return this;
+    }
+
     public ElementListBuilder<K> end() {
         return elementListBuilder;
     }

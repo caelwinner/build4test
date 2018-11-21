@@ -1,5 +1,6 @@
 package uk.co.caeldev.builder4test;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import uk.co.caeldev.builder4test.impl.Pojo;
 
@@ -12,6 +13,7 @@ import static uk.org.fyodor.generators.RDG.string;
 class FixedSizeListBuilderTest {
     
     @Test
+    @DisplayName("Should be able to build distinct instances of FixedSizeListBuilder")
     public void shouldReturnUniqueInstances() {
         //When
         FixedSizeListBuilder<Pojo> builder1 = FixedSizeListBuilder.fixedSizeListBuilder(1, creator);
@@ -22,6 +24,7 @@ class FixedSizeListBuilderTest {
     }
 
     @Test
+    @DisplayName("Should be able to build a list using defaults values")
     public void shouldBuildAListWithDefaultValuesNoRandoms() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator);
@@ -36,6 +39,7 @@ class FixedSizeListBuilderTest {
     }
 
     @Test
+    @DisplayName("Should be able to build a list overriding default values")
     public void shouldBuildAListWithOverrideConstantValues() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
@@ -51,6 +55,7 @@ class FixedSizeListBuilderTest {
     }
 
     @Test
+    @DisplayName("Should be able to build a list overriding default with constant and random values")
     public void shouldBuildAListWithOverrideConstantAndRandomValues() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
@@ -67,6 +72,7 @@ class FixedSizeListBuilderTest {
     }
 
     @Test
+    @DisplayName("Should be able to build a list overriding default with only random values")
     public void shouldBuildAListWithOverrideRandomValues() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)

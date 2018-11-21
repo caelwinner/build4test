@@ -65,6 +65,23 @@ class ElementBuilderTest {
         assertThat(elementListBuilder1).isEqualTo(elementListBuilder);
     }
 
+    @Test
+    @DisplayName("Should be able to nullify a field by not passing the null value")
+    public void shouldBeAbleToNullifyAField() {
+        //Given
+        Field<String> field = new Field<>("default");
+        ElementListBuilder<Pojo> elementListBuilder = elementListBuilder(PojoBuilder.creator);
+
+        //When
+        ElementBuilder<Pojo> elementBuilder = ElementBuilder.elementBuilder(elementListBuilder);
+        ElementListBuilder<Pojo> elementListBuilder1 = elementBuilder.nullify(field).end();
+
+        //Then
+        assertThat(elementBuilder.getFields()).hasSize(1);
+        assertThat(elementBuilder.getFields().get(field)).isNotPresent();
+        assertThat(elementListBuilder1).isEqualTo(elementListBuilder);
+    }
+
 
 
 }
