@@ -18,4 +18,11 @@ public class PojoBuilder {
 
     public static Creator<String> valueCreator = lookUp -> "test1";
 
+    public static Field<String> testValue = new Field<>();
+    public static Creator<String> valueTestCreator = lookUp -> lookUp.get(testValue, "test1");
+
+    public static Creator<Pojo> creatorWithPredefinedCreatorDefaults = lookUp -> new Pojo(lookUp.get(name2, valueTestCreator),
+            lookUp.get(value2));
+
+
 }

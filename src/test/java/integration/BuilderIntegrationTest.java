@@ -5,18 +5,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import uk.co.caeldev.builder4test.Builder;
 import uk.co.caeldev.builder4test.impl.Pojo;
-import uk.co.caeldev.builder4test.impl.PojoBuilder;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.creator;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.creatorWithPredefinedDefaults;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.name;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.name2;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.value;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.value2;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueCreator;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
 import static uk.org.fyodor.generators.RDG.string;
 
 public class BuilderIntegrationTest {
@@ -117,6 +110,21 @@ public class BuilderIntegrationTest {
     }
 
     @Test
+    @DisplayName("should build a pojo by overriding using a creator and overriding a value of it")
+    public void shouldOverrideDefaultValuesFromFieldInstantiationUsingAnotherCreator2() {
+        //When
+        Pojo pojo1 = Builder.build()
+                .entity(creatorWithPredefinedCreatorDefaults)
+                .override(testValue, "overridedValue1")
+                .override(name2, valueTestCreator)
+                .get();
+
+        //Then
+        assertThat(pojo1.getName()).isEqualTo("overridedValue1");
+        assertThat(pojo1.getValue()).isEqualTo("defaultValue");
+    }
+
+    @Test
     @DisplayName("should build a pojo successfully setting nulls as values")
     public void shouldOverrideWithNulls() {
         //When
@@ -143,10 +151,10 @@ public class BuilderIntegrationTest {
                     .list(creator)
                     .elements()
                         .element()
-                            .override(name, "testSiumple")
+                            .override(name, "testSimple")
                             .end()
                         .element()
-                            .override(name, "testSiumple2")
+                            .override(name, "testSimple2")
                             .end()
                     .get();
 
@@ -156,12 +164,12 @@ public class BuilderIntegrationTest {
 
             //And
             Pojo pojo = testSiumple.get(0);
-            assertThat(pojo.getName()).isEqualTo("testSiumple");
+            assertThat(pojo.getName()).isEqualTo("testSimple");
             assertThat(pojo.getValue()).isEqualTo("defaultValue");
 
             //And
             Pojo pojo1 = testSiumple.get(1);
-            assertThat(pojo1.getName()).isEqualTo("testSiumple2");
+            assertThat(pojo1.getName()).isEqualTo("testSimple2");
             assertThat(pojo1.getValue()).isEqualTo("defaultValue");
         }
 
