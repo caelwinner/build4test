@@ -7,7 +7,10 @@ import uk.co.caeldev.builder4test.impl.Pojo;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.creator;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.name;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.value;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueCreator;
 import static uk.org.fyodor.generators.RDG.string;
 
 class FixedSizeListBuilderTest {
@@ -83,5 +86,23 @@ class FixedSizeListBuilderTest {
         assertThat(pojos).hasSize(2);
         assertThat(pojos.get(0).getName()).isNotEqualTo(pojos.get(1).getName());
         assertThat(pojos.get(0).getValue()).isNotEqualTo(pojos.get(1).getValue());
+    }
+
+    @Test
+    @DisplayName("Should be able to build a list overriding default with creators")
+    public void shouldBuildAListWithOverrideCreatorValues() {
+        //When
+        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+                .override(name, valueCreator).override(value, valueCreator);
+        List<Pojo> pojos = builder.get();
+
+        //Then
+        assertThat(pojos).hasSize(2);
+        assertThat(pojos.get(0).getName()).isEqualTo(pojos.get(1).getName());
+        assertThat(pojos.get(0).getValue()).isEqualTo(pojos.get(1).getValue());
+
+        //And
+        assertThat(pojos.get(0).getName()).isEqualTo("test1");
+        assertThat(pojos.get(0).getValue()).isEqualTo("test1");
     }
 }

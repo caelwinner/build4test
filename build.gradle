@@ -32,6 +32,9 @@ dependencies {
 
     testImplementation "org.assertj:assertj-core:3.10.0"
 
+    testImplementation "org.mockito:mockito-junit-jupiter:2.25.0"
+
+
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.2.0"
 }
 

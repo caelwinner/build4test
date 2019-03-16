@@ -75,19 +75,6 @@ class DefaultLookUpTest {
     }
 
     @Test
-    @DisplayName("Should retrieve null when there default is null")
-    public void shouldGetNullWhenThereIsNoValueAndDefaultValueIsNull() {
-        //Given
-        Field<String> field = new Field<>();
-
-        //When
-        String value = defaultLookUp.get(field, null);
-
-        //Then
-        assertThat(value).isNull();
-    }
-
-    @Test
     @DisplayName("Should retrieve default value declared by using field constructor")
     public void shouldGetDefaultWhenItUseFieldDefaultValue() {
         //Given

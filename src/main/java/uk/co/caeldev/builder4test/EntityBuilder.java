@@ -3,7 +3,7 @@ package uk.co.caeldev.builder4test;
 import java.util.Map;
 import java.util.Optional;
 
-public class EntityBuilder<K> {
+public class EntityBuilder<K> implements OverrideField<EntityBuilder<K>> {
 
     private final Creator<K> creator;
     private final LookUp lookUp;
@@ -35,9 +35,15 @@ public class EntityBuilder<K> {
         return new EntityBuilder<>(Creator, lookUp);
     }
 
+    @Override
     public <V> EntityBuilder<K> override(Field<V> field, V value) {
         lookUp.put(field, value);
         return this;
+    }
+
+    @Override
+    public <V> EntityBuilder<K> override(Field<V> field, Creator<V> creator) {
+        return override(field, creator.build(lookUp));
     }
 
     public <V> EntityBuilder<K> nullify(Field<V> field) {

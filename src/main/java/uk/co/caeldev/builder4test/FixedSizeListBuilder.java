@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class FixedSizeListBuilder<K> {
+public class FixedSizeListBuilder<K> implements OverrideField<FixedSizeListBuilder<K>>{
 
     private final int size;
     private final Creator<K> creator;
@@ -33,8 +33,15 @@ public class FixedSizeListBuilder<K> {
         return this;
     }
 
+    @Override
     public <U> FixedSizeListBuilder<K> override(Field<U> field, U value) {
         values.put(field, Optional.of(value));
+        return this;
+    }
+
+    @Override
+    public <U> FixedSizeListBuilder<K> override(Field<U> field, Creator<U> creator) {
+        override(field, creator.build(new DefaultLookUp(values)));
         return this;
     }
 

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class ElementBuilder<K> {
+public class ElementBuilder<K> implements OverrideField<ElementBuilder<K>> {
+
     private final ElementListBuilder<K> elementListBuilder;
     private final Map<Field, Optional> fields;
 
@@ -21,9 +22,15 @@ public class ElementBuilder<K> {
         return this.fields;
     }
 
+    @Override
     public <U> ElementBuilder<K> override(Field<U> field, U value) {
         this.fields.put(field, Optional.ofNullable(value));
         return this;
+    }
+
+    @Override
+    public <U> ElementBuilder<K> override(Field<U> field, Creator<U> creator) {
+        return override(field, creator.build(new DefaultLookUp(fields)));
     }
 
     public <U> ElementBuilder<K> nullify(Field<U> field) {

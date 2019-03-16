@@ -43,7 +43,7 @@ class EntityBuilderTest {
     @DisplayName("Should be able to set null to a field")
     public void shouldBindNullValues() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
-                .override(PojoBuilder.name, null)
+                .nullify(PojoBuilder.name)
                 .override(PojoBuilder.value, "defaultValue")
                 .get();
 
@@ -61,5 +61,18 @@ class EntityBuilderTest {
 
         assertThat(pojo.getName()).isNull();
         assertThat(pojo.getValue()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should be able to a creator as a value of the field")
+    public void shouldBeAbleToSetACreatorAsValue() {
+        Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
+                .nullify(PojoBuilder.name)
+                .override(PojoBuilder.value, PojoBuilder.valueCreator)
+                .get();
+
+        assertThat(pojo.getName()).isNull();
+        assertThat(pojo.getValue()).isNotNull();
+        assertThat(pojo.getValue()).isEqualTo("test1");
     }
 }

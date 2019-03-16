@@ -82,6 +82,25 @@ class ElementBuilderTest {
         assertThat(elementListBuilder1).isEqualTo(elementListBuilder);
     }
 
+    @Test
+    @DisplayName("Should be able to use a creator as default value for a field")
+    public void shouldBeAbleToUseCreatorAsDefaultValueForAField() {
+        //Given
+        Field<String> field = new Field<>("default");
+        ElementListBuilder<Pojo> elementListBuilder = elementListBuilder(PojoBuilder.creator);
+
+
+        //When
+        ElementBuilder<Pojo> elementBuilder = ElementBuilder.elementBuilder(elementListBuilder);
+        ElementListBuilder<Pojo> elementListBuilder1 = elementBuilder.override(field, PojoBuilder.valueCreator).end();
+
+        //Then
+        assertThat(elementBuilder.getFields()).hasSize(1);
+        assertThat(elementBuilder.getFields().get(field)).isPresent();
+        assertThat(elementBuilder.getFields().get(field).get()).isEqualTo("test1");
+        assertThat(elementListBuilder1).isEqualTo(elementListBuilder);
+    }
+
 
 
 }

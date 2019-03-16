@@ -5,11 +5,18 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import uk.co.caeldev.builder4test.Builder;
 import uk.co.caeldev.builder4test.impl.Pojo;
+import uk.co.caeldev.builder4test.impl.PojoBuilder;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.creator;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.creatorWithPredefinedDefaults;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.name;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.name2;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.value;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.value2;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueCreator;
 import static uk.org.fyodor.generators.RDG.string;
 
 public class BuilderIntegrationTest {
@@ -93,14 +100,30 @@ public class BuilderIntegrationTest {
         assertThat(pojo1.getValue()).isEqualTo("overridedValue");
     }
 
+
+    @Test
+    @DisplayName("should build a pojo successfully using another creators available")
+    public void shouldOverrideDefaultValuesFromFieldInstantiationUsingAnotherCreator() {
+        //When
+        Pojo pojo1 = Builder.build()
+                .entity(creatorWithPredefinedDefaults)
+                .override(name2, valueCreator)
+                .override(value2, "overridedValue")
+                .get();
+
+        //Then
+        assertThat(pojo1.getName()).isEqualTo("test1");
+        assertThat(pojo1.getValue()).isEqualTo("overridedValue");
+    }
+
     @Test
     @DisplayName("should build a pojo successfully setting nulls as values")
     public void shouldOverrideWithNulls() {
         //When
         Pojo pojo = Builder.build()
                 .entity(creator)
-                .override(name, null)
-                .override(value, null)
+                .nullify(name)
+                .nullify(value)
                 .get();
 
         //Then
@@ -162,6 +185,51 @@ public class BuilderIntegrationTest {
 
             assertThat(testSimple.get(0).getName()).isNotEqualTo(testSimple.get(1).getName());
             assertThat(testSimple.get(0).getValue()).isNotEqualTo(testSimple.get(1).getValue());
+        }
+
+        @Test
+        @DisplayName("should build a list of two elements overriding defaults values with creators using size")
+        public void shouldBuildAListOfTwoUsingCreatorAndSize() {
+            //Given
+            int size = 2;
+
+            //When
+            List<Pojo> testSimple = Builder.build()
+                    .list(creator)
+                    .size(size)
+                    .override(name, valueCreator)
+                    .override(value, valueCreator)
+                    .get();
+
+            //Then
+            assertThat(testSimple).isNotEmpty();
+            assertThat(testSimple).hasSize(size);
+
+            assertThat(testSimple.get(0).getName()).isEqualTo(testSimple.get(1).getName());
+            assertThat(testSimple.get(0).getValue()).isEqualTo(testSimple.get(1).getValue());
+            assertThat(testSimple.get(0).getName()).isEqualTo("test1");
+            assertThat(testSimple.get(0).getValue()).isEqualTo("test1");
+        }
+
+        @Test
+        @DisplayName("should build a list of one element overriding defaults values with creators")
+        public void shouldBuildAListOfTwoUsingCreators() {
+            //When
+            List<Pojo> testSimple = Builder.build()
+                    .list(creator)
+                    .elements()
+                        .element()
+                            .override(name, valueCreator).end()
+                        .element()
+                            .override(value, valueCreator).end()
+                    .get();
+
+            //Then
+            assertThat(testSimple).isNotEmpty();
+            assertThat(testSimple).hasSize(2);
+
+            assertThat(testSimple.get(0).getName()).isEqualTo("test1");
+            assertThat(testSimple.get(1).getValue()).isEqualTo("test1");
         }
 
         @Test

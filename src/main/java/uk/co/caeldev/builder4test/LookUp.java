@@ -8,4 +8,8 @@ public abstract class LookUp {
 
     public abstract <V> V get(Field<V> field, V defaultValue);
 
+    public <V> V get(Field<V> field, Creator<V> defaultValue) {
+        return get(field, defaultValue.build(this));
+    }
+
 }
