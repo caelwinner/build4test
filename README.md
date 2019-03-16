@@ -88,27 +88,37 @@ Pojo pojo = Builder.build()
 
 if you have already creators and you want to reuse them on other creator, you can achieve by:
 
-- Setting your existing creator as a default value when you define your new creator:
+- Setting your existing creator as a default value when you define your new creator, note that you can even override the values of the creator that you are using as default. 
 
 ```java
-    public static Creator<String> existingOne = lookUp -> "test1";
-
-    public static Creator<Pojo> newCreator = lookUp -> new Pojo(lookUp.get(name2),
-            lookUp.get(value2, existingOne));
+    public static Field<String> name = new Field<>();
+    public static Creator<String> nameCreator = lookUp -> lookUp.get(name, "test1");
+    
+    public static Field<String> secondName = new Field<>();
+    public static Creator<String> creator = lookUp -> lookUp.get(secondName, secondCreator);
+    
+    Pojo pojo = Builder.build()
+                    .entity(creator)
+                    .override(name, "test2")
+                    .get();
 ```
 
 - The other way is by overriding a field using a creator as value:
 
 ```java
 
-public static Creator<String> secondCreator = lookUp -> "test1";
+public static Field<String> secondName = new Field<>();
+public static Creator<String> secondCreator = lookUp -> lookUp.get(secondName, "test1");
 
 Pojo pojo = Builder.build()
                 .entity(PojoBuilder.creator)
                 .override(PojoBuilder.name, "nameoverrideed")
+                .override(PojoBuilder.secondName, "secondName")
                 .override(PojoBuilder.value, secondCreator)
                 .get();
 ```
+
+- You can also from there override a field of secondCreator but you have to override those before using the secondCreator.
 
 
 ## Build a list of entities
