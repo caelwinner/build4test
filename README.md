@@ -5,6 +5,8 @@
 
 Library to build your POJO entities using a very intuitive DSL.
 
+**NOTE**: from version 0.2.x the DSL has changed a little bit to provide more support and new features. you will have to update your test in order to use the new version but hopefully the DSL should change.
+
 ## Motivation
 Most of the time when I am writing my tests I have the need to write clean and readable tests. One way to achieve is by having Test Builder, but normally it takes time and are difficult to mantain in time. So after looking around I came up with this library to help you to create your pojo in a different and easy way.
 
