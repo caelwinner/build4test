@@ -1,7 +1,11 @@
 package uk.co.caeldev.builder4test;
 
+import uk.co.caeldev.builder4test.resolvers.Resolver;
+import uk.co.caeldev.builder4test.resolvers.SupplierResolver;
+import uk.co.caeldev.builder4test.resolvers.ValueResolver;
+
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.Supplier;
 
 public class EntityBuilder<K> implements OverrideField<EntityBuilder<K>> {
 
@@ -13,7 +17,7 @@ public class EntityBuilder<K> implements OverrideField<EntityBuilder<K>> {
         this.lookUp = new DefaultLookUp();
     }
 
-    private EntityBuilder(Creator<K> creator, Map<Field, Optional> fields) {
+    private EntityBuilder(Creator<K> creator, Map<Field, Resolver> fields) {
         this.creator = creator;
         this.lookUp = new DefaultLookUp(fields);
     }
@@ -23,31 +27,37 @@ public class EntityBuilder<K> implements OverrideField<EntityBuilder<K>> {
         this.lookUp = lookUp;
     }
 
-    protected static <T> EntityBuilder<T> entityBuilder(Creator<T> Creator, Map<Field, Optional> fields) {
-        return new EntityBuilder<>(Creator, fields);
+    protected static <T> EntityBuilder<T> entityBuilder(Creator<T> creator, Map<Field, Resolver> fields) {
+        return new EntityBuilder<>(creator, fields);
     }
 
-    protected static <T> EntityBuilder<T> entityBuilder(Creator<T> Creator) {
-        return new EntityBuilder<>(Creator);
+    protected static <T> EntityBuilder<T> entityBuilder(Creator<T> creator) {
+        return new EntityBuilder<>(creator);
     }
 
-    protected static <T> EntityBuilder<T> entityBuilder(Creator<T> Creator, LookUp lookUp) {
-        return new EntityBuilder<>(Creator, lookUp);
+    protected static <T> EntityBuilder<T> entityBuilder(Creator<T> creator, LookUp lookUp) {
+        return new EntityBuilder<>(creator, lookUp);
     }
 
     @Override
-    public <V> EntityBuilder<K> override(Field<V> field, V value) {
-        lookUp.put(field, value);
+    public <V> EntityBuilder<K> override(Field<V> field, Supplier<V> value) {
+        lookUp.put(field, new SupplierResolver<>(value));
+        return this;
+    }
+
+    @Override
+    public <U> EntityBuilder<K> overrideValue(Field<U> field, U value) {
+        lookUp.put(field, new ValueResolver<>(value));
         return this;
     }
 
     @Override
     public <V> EntityBuilder<K> override(Field<V> field, Creator<V> creator) {
-        return override(field, creator.build(lookUp));
+        return override(field, () -> creator.build(lookUp));
     }
 
     public <V> EntityBuilder<K> nullify(Field<V> field) {
-        lookUp.put(field, null);
+        lookUp.put(field, new SupplierResolver<>(() -> null));
         return this;
     }
 

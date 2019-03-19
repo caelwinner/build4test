@@ -1,8 +1,10 @@
 package uk.co.caeldev.builder4test;
 
+import uk.co.caeldev.builder4test.resolvers.Resolver;
+
 public abstract class LookUp {
 
-    protected abstract <V> void put(Field<V> field, V value);
+    protected abstract <V, U> void put(Field<V> field, Resolver<V, U> value);
 
     public abstract <V> V get(Field<V> field);
 

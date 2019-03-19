@@ -1,17 +1,17 @@
 package uk.co.caeldev.builder4test;
 
 import com.google.common.collect.Lists;
+import uk.co.caeldev.builder4test.resolvers.Resolver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ElementListBuilder<K> {
 
     private final Creator<K> creator;
-    private final List<Map<Field, Optional>> elements;
+    private final List<Map<Field, Resolver>> elements;
 
     private ElementListBuilder(Creator<K> creator) {
         this.creator = creator;

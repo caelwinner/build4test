@@ -31,8 +31,20 @@ class EntityBuilderTest {
     @DisplayName("Should be able to override the default values")
     public void shouldBindValueAndNotUseDefault() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
-                .override(PojoBuilder.name, "newNAme")
-                .override(PojoBuilder.value, "newValue")
+                .overrideValue(PojoBuilder.name, "newNAme")
+                .overrideValue(PojoBuilder.value, "newValue")
+                .get();
+
+        assertThat(pojo.getName()).isEqualTo("newNAme");
+        assertThat(pojo.getValue()).isEqualTo("newValue");
+    }
+
+    @Test
+    @DisplayName("Should be able to override the default values using suppliers")
+    public void shouldBindValueAndNotUseDefaultUsingSuppliers() {
+        Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
+                .override(PojoBuilder.name, () -> "newNAme")
+                .override(PojoBuilder.value, () -> "newValue")
                 .get();
 
         assertThat(pojo.getName()).isEqualTo("newNAme");
@@ -44,11 +56,11 @@ class EntityBuilderTest {
     public void shouldBindNullValues() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
                 .nullify(PojoBuilder.name)
-                .override(PojoBuilder.value, "defaultValue")
+                .overrideValue(PojoBuilder.value, null)
                 .get();
 
         assertThat(pojo.getName()).isNull();
-        assertThat(pojo.getValue()).isNotNull();
+        assertThat(pojo.getValue()).isNull();
     }
 
     @Test
@@ -56,7 +68,7 @@ class EntityBuilderTest {
     public void shouldBindNullValuesUsingNullifyMethod() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
                 .nullify(PojoBuilder.name)
-                .override(PojoBuilder.value, "defaultValue")
+                .overrideValue(PojoBuilder.value, "defaultValue")
                 .get();
 
         assertThat(pojo.getName()).isNull();

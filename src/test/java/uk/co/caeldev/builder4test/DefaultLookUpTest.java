@@ -3,6 +3,8 @@ package uk.co.caeldev.builder4test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import uk.co.caeldev.builder4test.resolvers.SupplierResolver;
+import uk.co.caeldev.builder4test.resolvers.ValueResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +24,21 @@ class DefaultLookUpTest {
         Field<String> field = new Field<>();
 
         //When
-        defaultLookUp.put(field, "defaultValue");
+        defaultLookUp.put(field, new ValueResolver<>("defaultValue"));
+
+        //Then
+        String value = defaultLookUp.get(field);
+        assertThat(value).isEqualTo("defaultValue");
+    }
+
+    @Test
+    @DisplayName("Should put a supplier and retrieve a value for a field")
+    public void shouldPutASupplierValue() {
+        //Given
+        Field<String> field = new Field<>();
+
+        //When
+        defaultLookUp.put(field, new SupplierResolver<>(() -> "defaultValue"));
 
         //Then
         String value = defaultLookUp.get(field);
@@ -36,7 +52,7 @@ class DefaultLookUpTest {
         Field<String> field = new Field<>();
 
         //And
-        defaultLookUp.put(field, "defaultValue");
+        defaultLookUp.put(field, new ValueResolver<>( "defaultValue"));
 
         //When
         String value = defaultLookUp.get(field, "defaultValue");
@@ -65,7 +81,7 @@ class DefaultLookUpTest {
         Field<String> field = new Field<>();
 
         //And
-        defaultLookUp.put(field, null);
+        defaultLookUp.put(field, new SupplierResolver<>(() -> null));
 
         //When
         String value = defaultLookUp.get(field, "defaultValue");

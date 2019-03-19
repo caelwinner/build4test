@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.co.caeldev.builder4test.resolvers.Resolver;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -30,9 +31,9 @@ class LookUpTest {
 
     class TestLookUp extends LookUp {
 
-
         @Override
-        protected <V> void put(Field<V> field, V value) {
+        protected <V, U> void put(Field<V> field, Resolver<V, U> value) {
+
         }
 
         @Override

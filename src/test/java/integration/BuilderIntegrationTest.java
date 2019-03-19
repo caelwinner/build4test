@@ -9,7 +9,16 @@ import uk.co.caeldev.builder4test.impl.Pojo;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.creator;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.creatorWithPredefinedCreatorDefaults;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.creatorWithPredefinedDefaults;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.name;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.name2;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.testValue;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.value;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.value2;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueCreator;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueTestCreator;
 import static uk.org.fyodor.generators.RDG.string;
 
 public class BuilderIntegrationTest {
@@ -31,8 +40,38 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo = Builder.build()
                 .entity(creator)
-                .override(name, "nameoverrideed")
-                .override(value, "valueoverrided")
+                .overrideValue(name, "nameoverrideed")
+                .overrideValue(value, "valueoverrided")
+                .get();
+
+        //Then
+        assertThat(pojo.getName()).isEqualTo("nameoverrideed");
+        assertThat(pojo.getValue()).isEqualTo("valueoverrided");
+    }
+
+    @Test
+    @DisplayName("should build a pojo successfully when override default values using value and supplier")
+    public void shouldBuildPojoOverridingValuesWithValueAndSupplier() {
+        //When
+        Pojo pojo = Builder.build()
+                .entity(creator)
+                .overrideValue(name, "nameoverrideed")
+                .override(value, () -> "valueoverrided")
+                .get();
+
+        //Then
+        assertThat(pojo.getName()).isEqualTo("nameoverrideed");
+        assertThat(pojo.getValue()).isEqualTo("valueoverrided");
+    }
+
+    @Test
+    @DisplayName("should build a pojo successfully when override default values using suppliers")
+    public void shouldBuildPojoOverridingValuesWithSuppliers() {
+        //When
+        Pojo pojo = Builder.build()
+                .entity(creator)
+                .override(name, () -> "nameoverrideed")
+                .override(value, () -> "valueoverrided")
                 .get();
 
         //Then
@@ -46,15 +85,15 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo1 = Builder.build()
                 .entity(creator)
-                .override(name, "nameoverrideed1")
-                .override(value, "valueoverrided1")
+                .overrideValue(name, "nameoverrideed1")
+                .overrideValue(value, "valueoverrided1")
                 .get();
 
         //And
         Pojo pojo2 = Builder.build()
                 .entity(creator)
-                .override(name, "nameoverrideed2")
-                .override(value, "valueoverrided2")
+                .overrideValue(name, "nameoverrideed2")
+                .overrideValue(value, "valueoverrided2")
                 .get();
 
         //Then
@@ -84,8 +123,8 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo1 = Builder.build()
                 .entity(creatorWithPredefinedDefaults)
-                .override(name2, "overridedName")
-                .override(value2, "overridedValue")
+                .overrideValue(name2, "overridedName")
+                .overrideValue(value2, "overridedValue")
                 .get();
 
         //Then
@@ -101,7 +140,7 @@ public class BuilderIntegrationTest {
         Pojo pojo1 = Builder.build()
                 .entity(creatorWithPredefinedDefaults)
                 .override(name2, valueCreator)
-                .override(value2, "overridedValue")
+                .overrideValue(value2, "overridedValue")
                 .get();
 
         //Then
@@ -115,7 +154,7 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo1 = Builder.build()
                 .entity(creatorWithPredefinedCreatorDefaults)
-                .override(testValue, "overridedValue1")
+                .overrideValue(testValue, "overridedValue1")
                 .override(name2, valueTestCreator)
                 .get();
 
@@ -147,15 +186,46 @@ public class BuilderIntegrationTest {
         public void shouldBuildAListOfTwoEntities() {
 
             //When
-            List<Pojo> testSiumple = Builder.build()
+            List<Pojo> testSimple = Builder.build()
                     .list(creator)
                     .elements()
                         .element()
-                            .override(name, "testSimple")
+                            .overrideValue(name, "testSimple")
                             .end()
                         .element()
-                            .override(name, "testSimple2")
+                            .overrideValue(name, "testSimple2")
                             .end()
+                    .get();
+
+            //Then
+            assertThat(testSimple).isNotEmpty();
+            assertThat(testSimple).hasSize(2);
+
+            //And
+            Pojo pojo = testSimple.get(0);
+            assertThat(pojo.getName()).isEqualTo("testSimple");
+            assertThat(pojo.getValue()).isEqualTo("defaultValue");
+
+            //And
+            Pojo pojo1 = testSimple.get(1);
+            assertThat(pojo1.getName()).isEqualTo("testSimple2");
+            assertThat(pojo1.getValue()).isEqualTo("defaultValue");
+        }
+
+        @Test
+        @DisplayName("should build a list of two elements overriding defaults values using Suppliers")
+        public void shouldBuildAListOfTwoEntitiesUsingSuppliers() {
+
+            //When
+            List<Pojo> testSiumple = Builder.build()
+                    .list(creator)
+                    .elements()
+                    .element()
+                    .override(name, () -> "testSimple")
+                    .end()
+                    .element()
+                    .override(name, () -> "testSimple2")
+                    .end()
                     .get();
 
             //Then
@@ -174,8 +244,8 @@ public class BuilderIntegrationTest {
         }
 
         @Test
-        @DisplayName("should build a list of two elements overriding defaults values with random generators")
-        public void shouldBuildAListOfTwoUsingGenerators() {
+        @DisplayName("should build a list of two elements overriding defaults values using third party classes")
+        public void shouldBuildAListOfTwoUsingThirdPartyClasses() {
             //Given
             int size = 2;
 
@@ -183,8 +253,8 @@ public class BuilderIntegrationTest {
             List<Pojo> testSimple = Builder.build()
                     .list(creator)
                     .size(size)
-                    .override(name, string())
-                    .override(value, string())
+                    .override(name, () -> string().next())
+                    .override(value, () -> string().next())
                     .get();
 
             //Then
@@ -217,6 +287,30 @@ public class BuilderIntegrationTest {
             assertThat(testSimple.get(0).getValue()).isEqualTo(testSimple.get(1).getValue());
             assertThat(testSimple.get(0).getName()).isEqualTo("test1");
             assertThat(testSimple.get(0).getValue()).isEqualTo("test1");
+        }
+
+        @Test
+        @DisplayName("should build a list of two elements overriding defaults values with creator and supplier using size")
+        public void shouldBuildAListOfTwoUsingCreatorAndSupplierAndSize() {
+            //Given
+            int size = 2;
+
+            //When
+            List<Pojo> testSimple = Builder.build()
+                    .list(creator)
+                    .size(size)
+                    .override(name, valueCreator)
+                    .override(value, () -> "test2")
+                    .get();
+
+            //Then
+            assertThat(testSimple).isNotEmpty();
+            assertThat(testSimple).hasSize(size);
+
+            assertThat(testSimple.get(0).getName()).isEqualTo(testSimple.get(1).getName());
+            assertThat(testSimple.get(0).getValue()).isEqualTo(testSimple.get(1).getValue());
+            assertThat(testSimple.get(0).getName()).isEqualTo("test1");
+            assertThat(testSimple.get(0).getValue()).isEqualTo("test2");
         }
 
         @Test

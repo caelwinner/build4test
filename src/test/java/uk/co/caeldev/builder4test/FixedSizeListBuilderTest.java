@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import uk.co.caeldev.builder4test.impl.Pojo;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.co.caeldev.builder4test.impl.PojoBuilder.creator;
@@ -46,7 +47,23 @@ class FixedSizeListBuilderTest {
     public void shouldBuildAListWithOverrideConstantValues() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .override(name, "testName").override(value, "testValue");
+                .overrideValue(name,  "testName").overrideValue(value, "testValue");
+        List<Pojo> pojos = builder.get();
+
+        //Then
+        assertThat(pojos).hasSize(2);
+        assertThat(pojos.get(0).getName()).isEqualTo("testName");
+        assertThat(pojos.get(0).getValue()).isEqualTo("testValue");
+        assertThat(pojos.get(1).getName()).isEqualTo("testName");
+        assertThat(pojos.get(1).getValue()).isEqualTo("testValue");
+    }
+
+    @Test
+    @DisplayName("Should be able to build a list overriding default values")
+    public void shouldBuildAListWithOverrideConstantValuesFromSupplier() {
+        //When
+        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+                .override(name,  () -> "testName").override(value, () -> "testValue");
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -61,8 +78,9 @@ class FixedSizeListBuilderTest {
     @DisplayName("Should be able to build a list overriding default with constant and random values")
     public void shouldBuildAListWithOverrideConstantAndRandomValues() {
         //When
+        Supplier<String> stringSupplier = () -> string().next();
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .override(name, "testName").override(value, string());
+                .override(name, () -> "testName").override(value, stringSupplier);
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -78,8 +96,9 @@ class FixedSizeListBuilderTest {
     @DisplayName("Should be able to build a list overriding default with only random values")
     public void shouldBuildAListWithOverrideRandomValues() {
         //When
+        Supplier<String> stringSupplier = () -> string().next();
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .override(name, string()).override(value, string());
+                .override(name, stringSupplier).override(value, stringSupplier);
         List<Pojo> pojos = builder.get();
 
         //Then

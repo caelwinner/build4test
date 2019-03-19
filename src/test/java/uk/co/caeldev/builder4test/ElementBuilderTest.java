@@ -32,19 +32,35 @@ class ElementBuilderTest {
     }
 
     @Test
-    @DisplayName("Should add a field override")
-    public void should() {
+    @DisplayName("Should add a field override using values")
+    public void shouldAddFieldOverrideUsingValue() {
         //Given
         Field<String> field = new Field<>("default");
 
         //When
         ElementBuilder<Pojo> elementBuilder = ElementBuilder.elementBuilder(elementListBuilder(PojoBuilder.creator));
-        elementBuilder.override(field, "override");
+        elementBuilder.overrideValue(field, "override");
 
         //Then
         assertThat(elementBuilder.getFields()).hasSize(1);
-        assertThat(elementBuilder.getFields().get(field)).isPresent();
-        assertThat(elementBuilder.getFields().get(field)).contains("override");
+        assertThat(elementBuilder.getFields().get(field)).isNotNull();
+        assertThat(elementBuilder.getFields().get(field).resolve()).asString().contains("override");
+    }
+
+    @Test
+    @DisplayName("Should add a field override using supplier")
+    public void shouldAddFieldOverrideUsingSupplier() {
+        //Given
+        Field<String> field = new Field<>("default");
+
+        //When
+        ElementBuilder<Pojo> elementBuilder = ElementBuilder.elementBuilder(elementListBuilder(PojoBuilder.creator));
+        elementBuilder.override(field, () -> "override");
+
+        //Then
+        assertThat(elementBuilder.getFields()).hasSize(1);
+        assertThat(elementBuilder.getFields().get(field)).isNotNull();
+        assertThat(elementBuilder.getFields().get(field).resolve()).asString().contains("override");
     }
 
     @Test
@@ -56,12 +72,12 @@ class ElementBuilderTest {
 
         //When
         ElementBuilder<Pojo> elementBuilder = ElementBuilder.elementBuilder(elementListBuilder);
-        ElementListBuilder<Pojo> elementListBuilder1 = elementBuilder.override(field, "override").end();
+        ElementListBuilder<Pojo> elementListBuilder1 = elementBuilder.override(field, () -> "override").end();
 
         //Then
         assertThat(elementBuilder.getFields()).hasSize(1);
-        assertThat(elementBuilder.getFields().get(field)).isPresent();
-        assertThat(elementBuilder.getFields().get(field)).contains("override");
+        assertThat(elementBuilder.getFields().get(field)).isNotNull();
+        assertThat(elementBuilder.getFields().get(field).resolve()).asString().contains("override");
         assertThat(elementListBuilder1).isEqualTo(elementListBuilder);
     }
 
@@ -78,7 +94,7 @@ class ElementBuilderTest {
 
         //Then
         assertThat(elementBuilder.getFields()).hasSize(1);
-        assertThat(elementBuilder.getFields().get(field)).isNotPresent();
+        assertThat(elementBuilder.getFields().get(field)).isNotNull();
         assertThat(elementListBuilder1).isEqualTo(elementListBuilder);
     }
 
@@ -96,8 +112,8 @@ class ElementBuilderTest {
 
         //Then
         assertThat(elementBuilder.getFields()).hasSize(1);
-        assertThat(elementBuilder.getFields().get(field)).isPresent();
-        assertThat(elementBuilder.getFields().get(field).get()).isEqualTo("test1");
+        assertThat(elementBuilder.getFields().get(field)).isNotNull();
+        assertThat(elementBuilder.getFields().get(field).resolve()).isEqualTo("test1");
         assertThat(elementListBuilder1).isEqualTo(elementListBuilder);
     }
 

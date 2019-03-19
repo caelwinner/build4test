@@ -1,11 +1,13 @@
 package uk.co.caeldev.builder4test;
 
-import uk.org.fyodor.generators.Generator;
+import uk.co.caeldev.builder4test.resolvers.Resolver;
+import uk.co.caeldev.builder4test.resolvers.SupplierResolver;
+import uk.co.caeldev.builder4test.resolvers.ValueResolver;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,14 +15,12 @@ public class FixedSizeListBuilder<K> implements OverrideField<FixedSizeListBuild
 
     private final int size;
     private final Creator<K> creator;
-    private final Map<Field, Generator> generators;
-    private final Map<Field, Optional> values;
+    private final Map<Field, Resolver> values;
 
     private FixedSizeListBuilder(int size, Creator<K> creator) {
         this.size = size;
         this.creator = creator;
         values = new HashMap<>();
-        generators = new HashMap<>();
 
     }
 
@@ -28,25 +28,26 @@ public class FixedSizeListBuilder<K> implements OverrideField<FixedSizeListBuild
         return new FixedSizeListBuilder<>(size, creator);
     }
 
-    public <U> FixedSizeListBuilder<K> override(Field<U> field, Generator<U> generator) {
-        generators.put(field, generator);
+    @Override
+    public <U> FixedSizeListBuilder<K> override(Field<U> field, Supplier<U> supplier) {
+        values.put(field, new SupplierResolver(supplier));
         return this;
     }
 
     @Override
-    public <U> FixedSizeListBuilder<K> override(Field<U> field, U value) {
-        values.put(field, Optional.of(value));
+    public <U> FixedSizeListBuilder<K> overrideValue(Field<U> field, U value) {
+        values.put(field, new ValueResolver<>(value));
         return this;
     }
 
     @Override
     public <U> FixedSizeListBuilder<K> override(Field<U> field, Creator<U> creator) {
-        override(field, creator.build(new DefaultLookUp(values)));
+        override(field, () -> creator.build(new DefaultLookUp(values)));
         return this;
     }
 
     public List<K> get() {
-        LookUp lookUp = new RandomLookUp(values, generators);
+        LookUp lookUp = new DefaultLookUp(values);
         return IntStream.rangeClosed(1, size)
                 .mapToObj(it -> EntityBuilder.entityBuilder(creator, lookUp).get())
                 .collect(Collectors.toList());
