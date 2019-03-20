@@ -71,8 +71,8 @@ and below is the code to generate your pojo.
 ```java
 Pojo pojo = Builder.build()
                 .entity(PojoBuilder.creator)
-                .overrideValue(PojoBuilder.name, "nameoverrideed")
-                .overrideValue(PojoBuilder.value, "valueoverrided")
+                .applyValue(PojoBuilder.name, "nameoverrideed")
+                .applyValue(PojoBuilder.value, "valueoverrided")
                 .get();
 ```
 
@@ -81,7 +81,7 @@ You can nullify a field by just using nullify Method from DSL.
 ```java
 Pojo pojo = Builder.build()
                 .entity(PojoBuilder.creator)
-                .overrideValue(PojoBuilder.name, "nameoverrideed")
+                .applyValue(PojoBuilder.name, "nameoverrideed")
                 .nullify(PojoBuilder.value)
                 .get();
 ```
@@ -101,7 +101,7 @@ If you already have creators and you want to reuse them on other creator, you ca
     
     Pojo pojo = Builder.build()
                     .entity(creator)
-                    .overrideValue(name, "test2")
+                    .applyValue(name, "test2")
                     .get();
 ```
 
@@ -114,9 +114,9 @@ public static Creator<String> secondCreator = lookUp -> lookUp.get(secondName, "
 
 Pojo pojo = Builder.build()
                 .entity(PojoBuilder.creator)
-                .overrideValue(PojoBuilder.name, "nameoverrideed")
-                .overrideSupplier(PojoBuilder.secondName, () -> "secondName")
-                .overrideCreator(PojoBuilder.value, secondCreator)
+                .applyValue(PojoBuilder.name, "nameoverrideed")
+                .applySupplier(PojoBuilder.secondName, () -> "secondName")
+                .applyCreator(PojoBuilder.value, secondCreator)
                 .get();
 ```
 
@@ -132,10 +132,10 @@ In the example below we are creating a list of two elements overriding the fiend
 List<Pojo> testSiumple = Builder.build()
     .list(creator).elements()
         .element()
-            .overrideValue(name, "testSiumple")
+            .applyValue(name, "testSiumple")
             .end()
         .element()
-            .overrideValue(name, "testSiumple2")
+            .applyValue(name, "testSiumple2")
             .end()
     .get();
 ```
@@ -146,8 +146,8 @@ Also if you want to generate a certain amount of elements using the defaults val
 List<Pojo> testSimple = Builder.build()
                 .list(creator)
                 .size(5)
-                .overrideSupplier(name, () -> RDG.string())
-                .overrideSupplier(value, () -> RDG.string())
+                .applySupplier(name, () -> RDG.string())
+                .applySupplier(value, () -> RDG.string())
                 .get();
 ```
 This code will generate a List of five elements and each element will contain a random value and field.
@@ -159,7 +159,7 @@ Also if you want to generate a sequence value using index of the iteration you c
 List<Pojo> testSimple = Builder.build()
                 .list(creator)
                 .size(5)
-                .overrideSequence(name, (index) -> index+ "test")
+                .applySequence(name, (index) -> index+ "test")
                 .get();
 ```
 This will generate a list of Pojo with name 1test, 2test, 3test...
