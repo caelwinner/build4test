@@ -7,7 +7,7 @@ import uk.co.caeldev.builder4test.resolvers.ValueResolver;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class EntityBuilder<K> implements OverrideField<EntityBuilder<K>> {
+public class EntityBuilder<K> implements ApplyField<EntityBuilder<K>> {
 
     private final Creator<K> creator;
     private final LookUp lookUp;
@@ -40,20 +40,20 @@ public class EntityBuilder<K> implements OverrideField<EntityBuilder<K>> {
     }
 
     @Override
-    public <V> EntityBuilder<K> overrideSupplier(Field<V> field, Supplier<V> value) {
+    public <V> EntityBuilder<K> applySupplier(Field<V> field, Supplier<V> value) {
         lookUp.put(field, new SupplierResolver<>(value));
         return this;
     }
 
     @Override
-    public <U> EntityBuilder<K> overrideValue(Field<U> field, U value) {
+    public <U> EntityBuilder<K> applyValue(Field<U> field, U value) {
         lookUp.put(field, new ValueResolver<>(value));
         return this;
     }
 
     @Override
-    public <V> EntityBuilder<K> overrideCreator(Field<V> field, Creator<V> creator) {
-        return overrideSupplier(field, () -> creator.build(lookUp));
+    public <V> EntityBuilder<K> applyCreator(Field<V> field, Creator<V> creator) {
+        return applySupplier(field, () -> creator.build(lookUp));
     }
 
     public <V> EntityBuilder<K> nullify(Field<V> field) {

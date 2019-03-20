@@ -40,8 +40,8 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo = Builder.build()
                 .entity(creator)
-                .overrideValue(name, "nameoverrideed")
-                .overrideValue(value, "valueoverrided")
+                .applyValue(name, "nameoverrideed")
+                .applyValue(value, "valueoverrided")
                 .get();
 
         //Then
@@ -55,8 +55,8 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo = Builder.build()
                 .entity(creator)
-                .overrideValue(name, "nameoverrideed")
-                .overrideSupplier(value, () -> "valueoverrided")
+                .applyValue(name, "nameoverrideed")
+                .applySupplier(value, () -> "valueoverrided")
                 .get();
 
         //Then
@@ -70,8 +70,8 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo = Builder.build()
                 .entity(creator)
-                .overrideSupplier(name, () -> "nameoverrideed")
-                .overrideSupplier(value, () -> "valueoverrided")
+                .applySupplier(name, () -> "nameoverrideed")
+                .applySupplier(value, () -> "valueoverrided")
                 .get();
 
         //Then
@@ -85,15 +85,15 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo1 = Builder.build()
                 .entity(creator)
-                .overrideValue(name, "nameoverrideed1")
-                .overrideValue(value, "valueoverrided1")
+                .applyValue(name, "nameoverrideed1")
+                .applyValue(value, "valueoverrided1")
                 .get();
 
         //And
         Pojo pojo2 = Builder.build()
                 .entity(creator)
-                .overrideValue(name, "nameoverrideed2")
-                .overrideValue(value, "valueoverrided2")
+                .applyValue(name, "nameoverrideed2")
+                .applyValue(value, "valueoverrided2")
                 .get();
 
         //Then
@@ -123,8 +123,8 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo1 = Builder.build()
                 .entity(creatorWithPredefinedDefaults)
-                .overrideValue(name2, "overridedName")
-                .overrideValue(value2, "overridedValue")
+                .applyValue(name2, "overridedName")
+                .applyValue(value2, "overridedValue")
                 .get();
 
         //Then
@@ -139,8 +139,8 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo1 = Builder.build()
                 .entity(creatorWithPredefinedDefaults)
-                .overrideCreator(name2, valueCreator)
-                .overrideValue(value2, "overridedValue")
+                .applyCreator(name2, valueCreator)
+                .applyValue(value2, "overridedValue")
                 .get();
 
         //Then
@@ -154,8 +154,8 @@ public class BuilderIntegrationTest {
         //When
         Pojo pojo1 = Builder.build()
                 .entity(creatorWithPredefinedCreatorDefaults)
-                .overrideValue(testValue, "overridedValue1")
-                .overrideCreator(name2, valueTestCreator)
+                .applyValue(testValue, "overridedValue1")
+                .applyCreator(name2, valueTestCreator)
                 .get();
 
         //Then
@@ -190,10 +190,10 @@ public class BuilderIntegrationTest {
                     .list(creator)
                     .elements()
                         .element()
-                            .overrideValue(name, "testSimple")
+                            .applyValue(name, "testSimple")
                             .end()
                         .element()
-                            .overrideValue(name, "testSimple2")
+                            .applyValue(name, "testSimple2")
                             .end()
                     .get();
 
@@ -221,10 +221,10 @@ public class BuilderIntegrationTest {
                     .list(creator)
                     .elements()
                     .element()
-                    .overrideSupplier(name, () -> "testSimple")
+                    .applySupplier(name, () -> "testSimple")
                     .end()
                     .element()
-                    .overrideSupplier(name, () -> "testSimple2")
+                    .applySupplier(name, () -> "testSimple2")
                     .end()
                     .get();
 
@@ -253,8 +253,8 @@ public class BuilderIntegrationTest {
             List<Pojo> testSimple = Builder.build()
                     .list(creator)
                     .size(size)
-                    .overrideSupplier(name, () -> string().next())
-                    .overrideSupplier(value, () -> string().next())
+                    .applySupplier(name, () -> string().next())
+                    .applySupplier(value, () -> string().next())
                     .get();
 
             //Then
@@ -275,7 +275,7 @@ public class BuilderIntegrationTest {
             List<Pojo> testSimple = Builder.build()
                     .list(creator)
                     .size(size)
-                    .overrideSequence(name, (index) -> index + "test")
+                    .applySequence(name, (index) -> index + "test")
                     .get();
 
             //Then
@@ -296,8 +296,8 @@ public class BuilderIntegrationTest {
             List<Pojo> testSimple = Builder.build()
                     .list(creator)
                     .size(size)
-                    .overrideCreator(name, valueCreator)
-                    .overrideCreator(value, valueCreator)
+                    .applyCreator(name, valueCreator)
+                    .applyCreator(value, valueCreator)
                     .get();
 
             //Then
@@ -320,8 +320,8 @@ public class BuilderIntegrationTest {
             List<Pojo> testSimple = Builder.build()
                     .list(creator)
                     .size(size)
-                    .overrideCreator(name, valueCreator)
-                    .overrideSupplier(value, () -> "test2")
+                    .applyCreator(name, valueCreator)
+                    .applySupplier(value, () -> "test2")
                     .get();
 
             //Then
@@ -342,9 +342,9 @@ public class BuilderIntegrationTest {
                     .list(creator)
                     .elements()
                         .element()
-                            .overrideCreator(name, valueCreator).end()
+                            .applyCreator(name, valueCreator).end()
                         .element()
-                            .overrideCreator(value, valueCreator).end()
+                            .applyCreator(value, valueCreator).end()
                     .get();
 
             //Then

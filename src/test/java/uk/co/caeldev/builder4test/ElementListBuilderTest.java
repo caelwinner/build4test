@@ -38,7 +38,7 @@ class ElementListBuilderTest {
         //When
         List<Pojo> pojos = ElementListBuilder.elementListBuilder(PojoBuilder.creator)
                 .element()
-                    .overrideSupplier(PojoBuilder.name, () -> "test")
+                    .applySupplier(PojoBuilder.name, () -> "test")
                     .end()
                 .get();
         //Then
@@ -57,12 +57,12 @@ class ElementListBuilderTest {
         //When
         List<Pojo> pojos = ElementListBuilder.elementListBuilder(PojoBuilder.creator)
                 .element()
-                    .overrideSupplier(PojoBuilder.name, () -> "test1")
-                    .overrideSupplier(PojoBuilder.value, () -> "testValue1")
+                    .applySupplier(PojoBuilder.name, () -> "test1")
+                    .applySupplier(PojoBuilder.value, () -> "testValue1")
                     .end()
                 .element()
-                    .overrideSupplier(PojoBuilder.name, () -> "test2")
-                    .overrideSupplier(PojoBuilder.value, () -> "testValue2")
+                    .applySupplier(PojoBuilder.name, () -> "test2")
+                    .applySupplier(PojoBuilder.value, () -> "testValue2")
                     .end()
                 .get();
 

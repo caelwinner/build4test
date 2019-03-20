@@ -31,8 +31,8 @@ class EntityBuilderTest {
     @DisplayName("Should be able to override the default values")
     public void shouldBindValueAndNotUseDefault() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
-                .overrideValue(PojoBuilder.name, "newNAme")
-                .overrideValue(PojoBuilder.value, "newValue")
+                .applyValue(PojoBuilder.name, "newNAme")
+                .applyValue(PojoBuilder.value, "newValue")
                 .get();
 
         assertThat(pojo.getName()).isEqualTo("newNAme");
@@ -43,8 +43,8 @@ class EntityBuilderTest {
     @DisplayName("Should be able to override the default values using suppliers")
     public void shouldBindValueAndNotUseDefaultUsingSuppliers() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
-                .overrideSupplier(PojoBuilder.name, () -> "newNAme")
-                .overrideSupplier(PojoBuilder.value, () -> "newValue")
+                .applySupplier(PojoBuilder.name, () -> "newNAme")
+                .applySupplier(PojoBuilder.value, () -> "newValue")
                 .get();
 
         assertThat(pojo.getName()).isEqualTo("newNAme");
@@ -56,7 +56,7 @@ class EntityBuilderTest {
     public void shouldBindNullValues() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
                 .nullify(PojoBuilder.name)
-                .overrideValue(PojoBuilder.value, null)
+                .applyValue(PojoBuilder.value, null)
                 .get();
 
         assertThat(pojo.getName()).isNull();
@@ -68,7 +68,7 @@ class EntityBuilderTest {
     public void shouldBindNullValuesUsingNullifyMethod() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
                 .nullify(PojoBuilder.name)
-                .overrideValue(PojoBuilder.value, "defaultValue")
+                .applyValue(PojoBuilder.value, "defaultValue")
                 .get();
 
         assertThat(pojo.getName()).isNull();
@@ -80,7 +80,7 @@ class EntityBuilderTest {
     public void shouldBeAbleToSetACreatorAsValue() {
         Pojo pojo = EntityBuilder.entityBuilder(PojoBuilder.creator)
                 .nullify(PojoBuilder.name)
-                .overrideCreator(PojoBuilder.value, PojoBuilder.valueCreator)
+                .applyCreator(PojoBuilder.value, PojoBuilder.valueCreator)
                 .get();
 
         assertThat(pojo.getName()).isNull();

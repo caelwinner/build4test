@@ -47,7 +47,7 @@ class FixedSizeListBuilderTest {
     public void shouldBuildAListWithOverrideConstantValues() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .overrideValue(name,  "testName").overrideValue(value, "testValue");
+                .applyValue(name,  "testName").applyValue(value, "testValue");
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -63,7 +63,7 @@ class FixedSizeListBuilderTest {
     public void shouldBuildAListWithOverrideConstantValuesFromSupplier() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .overrideSupplier(name,  () -> "testName").overrideSupplier(value, () -> "testValue");
+                .applySupplier(name,  () -> "testName").applySupplier(value, () -> "testValue");
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -79,7 +79,7 @@ class FixedSizeListBuilderTest {
     public void shouldBuildAListWithOverrideConstantValuesFromSequenceFunction() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .overrideSequence(name,  (index) -> index+"testName").overrideSupplier(value, () -> "testValue");
+                .applySequence(name,  (index) -> index+"testName").applySupplier(value, () -> "testValue");
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -96,7 +96,7 @@ class FixedSizeListBuilderTest {
         //When
         Supplier<String> stringSupplier = () -> string().next();
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .overrideSupplier(name, () -> "testName").overrideSupplier(value, stringSupplier);
+                .applySupplier(name, () -> "testName").applySupplier(value, stringSupplier);
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -114,7 +114,7 @@ class FixedSizeListBuilderTest {
         //When
         Supplier<String> stringSupplier = () -> string().next();
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .overrideSupplier(name, stringSupplier).overrideSupplier(value, stringSupplier);
+                .applySupplier(name, stringSupplier).applySupplier(value, stringSupplier);
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -128,7 +128,7 @@ class FixedSizeListBuilderTest {
     public void shouldBuildAListWithOverrideCreatorValues() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
-                .overrideCreator(name, valueCreator).overrideCreator(value, valueCreator);
+                .applyCreator(name, valueCreator).applyCreator(value, valueCreator);
         List<Pojo> pojos = builder.get();
 
         //Then

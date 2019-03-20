@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class ElementBuilder<K> implements OverrideField<ElementBuilder<K>> {
+public class ElementBuilder<K> implements ApplyField<ElementBuilder<K>> {
 
     private final ElementListBuilder<K> elementListBuilder;
     private final Map<Field, Resolver> fields;
@@ -27,20 +27,20 @@ public class ElementBuilder<K> implements OverrideField<ElementBuilder<K>> {
     }
 
     @Override
-    public <U> ElementBuilder<K> overrideSupplier(Field<U> field, Supplier<U> value) {
+    public <U> ElementBuilder<K> applySupplier(Field<U> field, Supplier<U> value) {
         this.fields.put(field, new SupplierResolver(value));
         return this;
     }
 
     @Override
-    public <U> ElementBuilder<K> overrideValue(Field<U> field, U value) {
+    public <U> ElementBuilder<K> applyValue(Field<U> field, U value) {
         this.fields.put(field, new ValueResolver<>(value));
         return this;
     }
 
     @Override
-    public <U> ElementBuilder<K> overrideCreator(Field<U> field, Creator<U> creator) {
-        return overrideSupplier(field, () -> creator.build(new DefaultLookUp(fields)));
+    public <U> ElementBuilder<K> applyCreator(Field<U> field, Creator<U> creator) {
+        return applySupplier(field, () -> creator.build(new DefaultLookUp(fields)));
     }
 
     public <U> ElementBuilder<K> nullify(Field<U> field) {
