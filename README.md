@@ -172,7 +172,5 @@ The library is highly inspired by
 
 [Make it Easy](https://github.com/npryce/make-it-easy) And [AssertJ](https://github.com/joel-costigliola/assertj-core)
 
-For the random generation we decided to use [Fyodor](https://github.com/fyodor-org-uk/fyodor)
-
 Make It Ease lib provides a Hamcrest style DSL but I am more fun of using a builder kind of DSL like AssertJ that offers straight away the option that I can use.
 I want to say thank you to all the collaborator of MakeItEasy project.
