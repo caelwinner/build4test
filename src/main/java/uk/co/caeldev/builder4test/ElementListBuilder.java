@@ -6,19 +6,20 @@ import uk.co.caeldev.builder4test.resolvers.Resolver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ElementListBuilder<K> {
 
-    private final Creator<K> creator;
+    private final Function<LookUp, K> creator;
     private final List<Map<Field, Resolver>> elements;
 
-    private ElementListBuilder(Creator<K> creator) {
+    private ElementListBuilder(Function<LookUp, K> creator) {
         this.creator = creator;
         this.elements = new ArrayList<>();
     }
 
-    public static <K> ElementListBuilder<K> elementListBuilder(Creator<K> creator) {
+    public static <K> ElementListBuilder<K> elementListBuilder(Function<LookUp, K> creator) {
         return new ElementListBuilder<>(creator);
     }
 

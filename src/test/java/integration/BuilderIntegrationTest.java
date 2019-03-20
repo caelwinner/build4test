@@ -9,16 +9,7 @@ import uk.co.caeldev.builder4test.impl.Pojo;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.creator;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.creatorWithPredefinedCreatorDefaults;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.creatorWithPredefinedDefaults;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.name;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.name2;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.testValue;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.value;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.value2;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueCreator;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueTestCreator;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
 import static uk.org.fyodor.generators.RDG.string;
 
 public class BuilderIntegrationTest {

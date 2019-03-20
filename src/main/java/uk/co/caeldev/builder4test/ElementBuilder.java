@@ -6,6 +6,7 @@ import uk.co.caeldev.builder4test.resolvers.ValueResolver;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ElementBuilder<K> implements ApplyField<ElementBuilder<K>> {
@@ -39,8 +40,8 @@ public class ElementBuilder<K> implements ApplyField<ElementBuilder<K>> {
     }
 
     @Override
-    public <U> ElementBuilder<K> applyCreator(Field<U> field, Creator<U> creator) {
-        return applySupplier(field, () -> creator.build(new DefaultLookUp(fields)));
+    public <U> ElementBuilder<K> applyCreator(Field<U> field, Function<LookUp, U> creator) {
+        return applySupplier(field, () -> creator.apply(new DefaultLookUp(fields)));
     }
 
     public <U> ElementBuilder<K> nullify(Field<U> field) {

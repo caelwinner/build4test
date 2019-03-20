@@ -7,6 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.co.caeldev.builder4test.resolvers.Resolver;
 
+import java.util.function.Function;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -14,7 +16,7 @@ import static org.mockito.Mockito.verify;
 class LookUpTest {
 
     @Mock
-    private Creator<String> creator;
+    private Function<LookUp, String> creator;
 
     @Test
     @DisplayName("Should Create two different instance of ElementListBuilder")
@@ -26,7 +28,7 @@ class LookUpTest {
         testLookUp.get(new Field<String>(), creator);
 
         //Then
-        verify(creator).build(any(LookUp.class));
+        verify(creator).apply(any(LookUp.class));
     }
 
     class TestLookUp extends LookUp {

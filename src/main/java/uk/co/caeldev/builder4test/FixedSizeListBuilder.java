@@ -16,17 +16,17 @@ import java.util.stream.IntStream;
 public class FixedSizeListBuilder<K> implements ApplyField<FixedSizeListBuilder<K>> {
 
     private final int size;
-    private final Creator<K> creator;
+    private final Function<LookUp, K> creator;
     private final Map<Field, Resolver> values;
 
-    private FixedSizeListBuilder(int size, Creator<K> creator) {
+    private FixedSizeListBuilder(int size, Function<LookUp, K> creator) {
         this.size = size;
         this.creator = creator;
         values = new HashMap<>();
 
     }
 
-    protected static <U> FixedSizeListBuilder<U> fixedSizeListBuilder(int size, Creator<U> creator) {
+    protected static <U> FixedSizeListBuilder<U> fixedSizeListBuilder(int size, Function<LookUp, U> creator) {
         return new FixedSizeListBuilder<>(size, creator);
     }
 
@@ -43,8 +43,8 @@ public class FixedSizeListBuilder<K> implements ApplyField<FixedSizeListBuilder<
     }
 
     @Override
-    public <U> FixedSizeListBuilder<K> applyCreator(Field<U> field, Creator<U> creator) {
-        applySupplier(field, () -> creator.build(new DefaultLookUp(values)));
+    public <U> FixedSizeListBuilder<K> applyCreator(Field<U> field, Function<LookUp, U> creator) {
+        applySupplier(field, () -> creator.apply(new DefaultLookUp(values)));
         return this;
     }
 

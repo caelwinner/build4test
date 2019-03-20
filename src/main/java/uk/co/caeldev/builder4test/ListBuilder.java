@@ -1,14 +1,16 @@
 package uk.co.caeldev.builder4test;
 
+import java.util.function.Function;
+
 public class ListBuilder<K> {
 
-    private final Creator<K> creator;
+    private final Function<LookUp, K> creator;
 
-    private ListBuilder(Creator<K> creator) {
+    private ListBuilder(Function<LookUp, K> creator) {
         this.creator = creator;
     }
 
-    protected static <K> ListBuilder<K> listBuilder(Creator<K> creator) {
+    protected static <K> ListBuilder<K> listBuilder(Function<LookUp, K> creator) {
         return new ListBuilder<>(creator);
     }
 
