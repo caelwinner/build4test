@@ -153,6 +153,17 @@ List<Pojo> testSimple = Builder.build()
 This code will generate a List of five elements and each element will contain a random value and field.
 Using defaults generator provided by Fyodor is easy to generate your random values.
 
+Also if you want to generate a sequence value using index of the iteration you can supply a Function
+
+```java
+List<Pojo> testSimple = Builder.build()
+                .list(creator)
+                .size(5)
+                .overrideSequence(name, (index) -> index+ "test")
+                .get();
+```
+This will generate a list of Pojo with name 1test, 2test, 3test...
+
 __Note:__ that you can use creators as default values in your collections. 
 
 ## Credits

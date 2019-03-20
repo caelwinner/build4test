@@ -266,6 +266,27 @@ public class BuilderIntegrationTest {
         }
 
         @Test
+        @DisplayName("should build a list of two elements overriding defaults values using iteration index as arguments to the function")
+        public void shouldBuildAListOfTwoUsingThirdPartyClassesAndFunction() {
+            //Given
+            int size = 2;
+
+            //When
+            List<Pojo> testSimple = Builder.build()
+                    .list(creator)
+                    .size(size)
+                    .overrideSequence(name, (index) -> index + "test")
+                    .get();
+
+            //Then
+            assertThat(testSimple).isNotEmpty();
+            assertThat(testSimple).hasSize(size);
+
+            assertThat(testSimple.get(0).getName()).isEqualTo("1test");
+            assertThat(testSimple.get(1).getName()).isEqualTo("2test");
+        }
+
+        @Test
         @DisplayName("should build a list of two elements overriding defaults values with creators using size")
         public void shouldBuildAListOfTwoUsingCreatorAndSize() {
             //Given

@@ -1,5 +1,6 @@
 package uk.co.caeldev.builder4test;
 
+import uk.co.caeldev.builder4test.resolvers.FunctionResolver;
 import uk.co.caeldev.builder4test.resolvers.Resolver;
 import uk.co.caeldev.builder4test.resolvers.SupplierResolver;
 import uk.co.caeldev.builder4test.resolvers.ValueResolver;
@@ -7,6 +8,7 @@ import uk.co.caeldev.builder4test.resolvers.ValueResolver;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -46,10 +48,24 @@ public class FixedSizeListBuilder<K> implements OverrideField<FixedSizeListBuild
         return this;
     }
 
+    public <U> FixedSizeListBuilder<K> overrideSequence(Field<U> field, Function<Integer, U> function) {
+        values.put(field, new FunctionResolver<>(function));
+        return this;
+    }
+
     public List<K> get() {
         LookUp lookUp = new DefaultLookUp(values);
         return IntStream.rangeClosed(1, size)
-                .mapToObj(it -> EntityBuilder.entityBuilder(creator, lookUp).get())
+                .mapToObj(it -> {
+                    passArgumentForFunctions(it);
+                    return EntityBuilder.entityBuilder(creator, lookUp).get();
+                })
                 .collect(Collectors.toList());
+    }
+
+    private void passArgumentForFunctions(int it) {
+        values.entrySet().stream()
+                .filter(entry -> entry.getValue() instanceof FunctionResolver)
+                .forEach(entry -> ((FunctionResolver) entry.getValue()).setArgument(it));
     }
 }

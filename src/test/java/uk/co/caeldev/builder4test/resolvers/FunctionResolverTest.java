@@ -11,9 +11,10 @@ class FunctionResolverTest {
     @DisplayName("Should resolve the function with non null argument")
     void shouldResolveFunction() {
         //Given
-        FunctionResolver<String, String> resolver = new FunctionResolver<>((it) -> it + "1", "test");
+        FunctionResolver<String, String> resolver = new FunctionResolver<>((it) -> it + "1");
 
         //When
+        resolver.setArgument("test");
         String result = resolver.resolve();
 
         //Then

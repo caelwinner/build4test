@@ -4,15 +4,18 @@ import java.util.function.Function;
 
 public class FunctionResolver<T, U> extends Resolver<T, Function> {
 
-    private final U argument;
+    private U argument;
 
-    public FunctionResolver(Function applier, U argument) {
+    public FunctionResolver(Function applier) {
         super(applier);
-        this.argument = argument;
     }
 
     @Override
     public T resolve() {
         return (T)applier.apply(argument);
+    }
+
+    public void setArgument(U argument) {
+        this.argument = argument;
     }
 }

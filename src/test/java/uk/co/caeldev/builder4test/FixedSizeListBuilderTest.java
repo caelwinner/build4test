@@ -43,7 +43,7 @@ class FixedSizeListBuilderTest {
     }
 
     @Test
-    @DisplayName("Should be able to build a list overriding default values")
+    @DisplayName("Should be able to build a list overriding default values using Value types")
     public void shouldBuildAListWithOverrideConstantValues() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
@@ -59,7 +59,7 @@ class FixedSizeListBuilderTest {
     }
 
     @Test
-    @DisplayName("Should be able to build a list overriding default values")
+    @DisplayName("Should be able to build a list overriding default values using Supplier")
     public void shouldBuildAListWithOverrideConstantValuesFromSupplier() {
         //When
         FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
@@ -71,6 +71,22 @@ class FixedSizeListBuilderTest {
         assertThat(pojos.get(0).getName()).isEqualTo("testName");
         assertThat(pojos.get(0).getValue()).isEqualTo("testValue");
         assertThat(pojos.get(1).getName()).isEqualTo("testName");
+        assertThat(pojos.get(1).getValue()).isEqualTo("testValue");
+    }
+
+    @Test
+    @DisplayName("Should be able to build a list overriding default values using Sequence Function")
+    public void shouldBuildAListWithOverrideConstantValuesFromSequenceFunction() {
+        //When
+        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+                .overrideSequence(name,  (index) -> index+"testName").overrideSupplier(value, () -> "testValue");
+        List<Pojo> pojos = builder.get();
+
+        //Then
+        assertThat(pojos).hasSize(2);
+        assertThat(pojos.get(0).getName()).isEqualTo("1testName");
+        assertThat(pojos.get(0).getValue()).isEqualTo("testValue");
+        assertThat(pojos.get(1).getName()).isEqualTo("2testName");
         assertThat(pojos.get(1).getValue()).isEqualTo("testValue");
     }
 
