@@ -21,14 +21,25 @@ class ListBuilderTest {
     }
 
     @Test
-    @DisplayName("Should Create two different instance of FixedSizeListBuilder")
+    @DisplayName("Should Create two different instance of RangeSizeListBuilder")
     public void shouldCreateDistinctFixedSizeListBuilder() {
         //When
-        FixedSizeListBuilder<Pojo> fixedSizeListBuilder = ListBuilder.listBuilder(PojoBuilder.creator).size(1);
-        FixedSizeListBuilder<Pojo> fixedSizeListBuilder2 = ListBuilder.listBuilder(PojoBuilder.creator).size(1);
+        RangeSizeListBuilder<Pojo> rangeSizeListBuilder = ListBuilder.listBuilder(PojoBuilder.creator).size(1);
+        RangeSizeListBuilder<Pojo> rangeSizeListBuilder2 = ListBuilder.listBuilder(PojoBuilder.creator).size(1);
 
         //Then
-        assertThat(fixedSizeListBuilder).isNotEqualTo(fixedSizeListBuilder2);
+        assertThat(rangeSizeListBuilder).isNotEqualTo(rangeSizeListBuilder2);
+    }
+
+    @Test
+    @DisplayName("Should Create two different instance of RangeSizeListBuilder")
+    public void shouldCreateDistinctRangeSizeListBuilder() {
+        //When
+        RangeSizeListBuilder<Pojo> rangeSizeListBuilder = ListBuilder.listBuilder(PojoBuilder.creator).range(1, 1);
+        RangeSizeListBuilder<Pojo> rangeSizeListBuilder2 = ListBuilder.listBuilder(PojoBuilder.creator).range(1, 1);
+
+        //Then
+        assertThat(rangeSizeListBuilder).isNotEqualTo(rangeSizeListBuilder2);
     }
 
 }

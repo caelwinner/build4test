@@ -165,6 +165,16 @@ List<Pojo> testSimple = Builder.build()
 ```
 This will generate a list of Pojo with name 1test, 2test, 3test...
 
+- generate a list from a range is also possible:
+
+```java
+List<Pojo> testSimple = Builder.build()
+                .list(creator)
+                .range(1, 5)
+                .applySequence(name, (index) -> index+ "test")
+                .get();
+```
+
 __Note:__ that you can use creators as default values in your collections. 
 
 ## Credits

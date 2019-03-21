@@ -18,7 +18,11 @@ public class ListBuilder<K> {
         return ElementListBuilder.elementListBuilder(creator);
     }
 
-    public FixedSizeListBuilder<K> size(int size) {
-        return FixedSizeListBuilder.fixedSizeListBuilder(size, creator);
+    public RangeSizeListBuilder<K> size(int size) {
+        return RangeSizeListBuilder.rangeSizeListBuilder(1, size, creator);
+    }
+
+    public RangeSizeListBuilder<K> range(int start, int end) {
+        return RangeSizeListBuilder.rangeSizeListBuilder(start, end, creator);
     }
 }

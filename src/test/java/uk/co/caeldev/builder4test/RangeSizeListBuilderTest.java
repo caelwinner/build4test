@@ -8,20 +8,17 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.creator;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.name;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.value;
-import static uk.co.caeldev.builder4test.impl.PojoBuilder.valueCreator;
+import static uk.co.caeldev.builder4test.impl.PojoBuilder.*;
 import static uk.org.fyodor.generators.RDG.string;
 
-class FixedSizeListBuilderTest {
+class RangeSizeListBuilderTest {
     
     @Test
-    @DisplayName("Should be able to build distinct instances of FixedSizeListBuilder")
+    @DisplayName("Should be able to build distinct instances of RangeSizeListBuilder")
     public void shouldReturnUniqueInstances() {
         //When
-        FixedSizeListBuilder<Pojo> builder1 = FixedSizeListBuilder.fixedSizeListBuilder(1, creator);
-        FixedSizeListBuilder<Pojo> builder2 = FixedSizeListBuilder.fixedSizeListBuilder(1, creator);
+        RangeSizeListBuilder<Pojo> builder1 = RangeSizeListBuilder.rangeSizeListBuilder(1, 1, creator);
+        RangeSizeListBuilder<Pojo> builder2 = RangeSizeListBuilder.rangeSizeListBuilder(1, 1, creator);
 
         //Then
         assertThat(builder1).isNotEqualTo(builder2);
@@ -31,7 +28,7 @@ class FixedSizeListBuilderTest {
     @DisplayName("Should be able to build a list using defaults values")
     public void shouldBuildAListWithDefaultValuesNoRandoms() {
         //When
-        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator);
+        RangeSizeListBuilder<Pojo> builder = RangeSizeListBuilder.rangeSizeListBuilder(1, 2, creator);
         List<Pojo> pojos = builder.get();
 
         //Then
@@ -46,7 +43,7 @@ class FixedSizeListBuilderTest {
     @DisplayName("Should be able to build a list overriding default values using Value types")
     public void shouldBuildAListWithOverrideConstantValues() {
         //When
-        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+        RangeSizeListBuilder<Pojo> builder = RangeSizeListBuilder.rangeSizeListBuilder(1, 2, creator)
                 .applyValue(name,  "testName").applyValue(value, "testValue");
         List<Pojo> pojos = builder.get();
 
@@ -62,7 +59,7 @@ class FixedSizeListBuilderTest {
     @DisplayName("Should be able to build a list overriding default values using Supplier")
     public void shouldBuildAListWithOverrideConstantValuesFromSupplier() {
         //When
-        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+        RangeSizeListBuilder<Pojo> builder = RangeSizeListBuilder.rangeSizeListBuilder(1, 2, creator)
                 .applySupplier(name,  () -> "testName").applySupplier(value, () -> "testValue");
         List<Pojo> pojos = builder.get();
 
@@ -78,7 +75,7 @@ class FixedSizeListBuilderTest {
     @DisplayName("Should be able to build a list overriding default values using Sequence Function")
     public void shouldBuildAListWithOverrideConstantValuesFromSequenceFunction() {
         //When
-        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+        RangeSizeListBuilder<Pojo> builder = RangeSizeListBuilder.rangeSizeListBuilder(1, 2, creator)
                 .applySequence(name,  (index) -> index+"testName").applySupplier(value, () -> "testValue");
         List<Pojo> pojos = builder.get();
 
@@ -95,7 +92,7 @@ class FixedSizeListBuilderTest {
     public void shouldBuildAListWithOverrideConstantAndRandomValues() {
         //When
         Supplier<String> stringSupplier = () -> string().next();
-        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+        RangeSizeListBuilder<Pojo> builder = RangeSizeListBuilder.rangeSizeListBuilder(1, 2, creator)
                 .applySupplier(name, () -> "testName").applySupplier(value, stringSupplier);
         List<Pojo> pojos = builder.get();
 
@@ -113,7 +110,7 @@ class FixedSizeListBuilderTest {
     public void shouldBuildAListWithOverrideRandomValues() {
         //When
         Supplier<String> stringSupplier = () -> string().next();
-        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+        RangeSizeListBuilder<Pojo> builder = RangeSizeListBuilder.rangeSizeListBuilder(1, 2, creator)
                 .applySupplier(name, stringSupplier).applySupplier(value, stringSupplier);
         List<Pojo> pojos = builder.get();
 
@@ -127,7 +124,7 @@ class FixedSizeListBuilderTest {
     @DisplayName("Should be able to build a list overriding default with creators")
     public void shouldBuildAListWithOverrideCreatorValues() {
         //When
-        FixedSizeListBuilder<Pojo> builder = FixedSizeListBuilder.fixedSizeListBuilder(2, creator)
+        RangeSizeListBuilder<Pojo> builder = RangeSizeListBuilder.rangeSizeListBuilder(1, 2, creator)
                 .applyCreator(name, valueCreator).applyCreator(value, valueCreator);
         List<Pojo> pojos = builder.get();
 

@@ -13,49 +13,51 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class FixedSizeListBuilder<K> implements ApplyField<FixedSizeListBuilder<K>> {
+public class RangeSizeListBuilder<K> implements ApplyField<RangeSizeListBuilder<K>> {
 
-    private final int size;
     private final Function<LookUp, K> creator;
     private final Map<Field, Resolver> values;
+    private final int start;
+    private final int end;
 
-    private FixedSizeListBuilder(int size, Function<LookUp, K> creator) {
-        this.size = size;
+    private RangeSizeListBuilder(int start, int end, Function<LookUp, K> creator) {
+        this.start = start;
+        this.end = end;
         this.creator = creator;
         values = new HashMap<>();
 
     }
 
-    protected static <U> FixedSizeListBuilder<U> fixedSizeListBuilder(int size, Function<LookUp, U> creator) {
-        return new FixedSizeListBuilder<>(size, creator);
+    protected static <U> RangeSizeListBuilder<U> rangeSizeListBuilder(int start, int end, Function<LookUp, U> creator) {
+        return new RangeSizeListBuilder<>(start, end, creator);
     }
 
     @Override
-    public <U> FixedSizeListBuilder<K> applySupplier(Field<U> field, Supplier<U> supplier) {
+    public <U> RangeSizeListBuilder<K> applySupplier(Field<U> field, Supplier<U> supplier) {
         values.put(field, new SupplierResolver(supplier));
         return this;
     }
 
     @Override
-    public <U> FixedSizeListBuilder<K> applyValue(Field<U> field, U value) {
+    public <U> RangeSizeListBuilder<K> applyValue(Field<U> field, U value) {
         values.put(field, new ValueResolver<>(value));
         return this;
     }
 
     @Override
-    public <U> FixedSizeListBuilder<K> applyCreator(Field<U> field, Function<LookUp, U> creator) {
+    public <U> RangeSizeListBuilder<K> applyCreator(Field<U> field, Function<LookUp, U> creator) {
         applySupplier(field, () -> creator.apply(new DefaultLookUp(values)));
         return this;
     }
 
-    public <U> FixedSizeListBuilder<K> applySequence(Field<U> field, Function<Integer, U> function) {
+    public <U> RangeSizeListBuilder<K> applySequence(Field<U> field, Function<Integer, U> function) {
         values.put(field, new FunctionResolver<>(function));
         return this;
     }
 
     public List<K> get() {
         LookUp lookUp = new DefaultLookUp(values);
-        return IntStream.rangeClosed(1, size)
+        return IntStream.rangeClosed(start, end)
                 .mapToObj(it -> {
                     passArgumentToSequenceFunctions(it);
                     return EntityBuilder.entityBuilder(creator, lookUp).get();

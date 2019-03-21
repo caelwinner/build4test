@@ -360,5 +360,23 @@ public class BuilderIntegrationTest {
             assertThat(testSimple.get(0).getName()).isEqualTo("defaultName");
             assertThat(testSimple.get(0).getValue()).isEqualTo("defaultValue");
         }
+
+        @Test
+        @DisplayName("should build a list based on a range")
+        public void shouldBuildAListBasedOnARange() {
+            //When
+            List<Pojo> testSimple = Builder.build()
+                    .list(creator).range(2, 3).get();
+
+            //Then
+            assertThat(testSimple).isNotEmpty();
+            assertThat(testSimple).hasSize(2);
+
+            assertThat(testSimple.get(0).getName()).isEqualTo("defaultName");
+            assertThat(testSimple.get(0).getValue()).isEqualTo("defaultValue");
+
+            assertThat(testSimple.get(1).getName()).isEqualTo("defaultName");
+            assertThat(testSimple.get(1).getValue()).isEqualTo("defaultValue");
+        }
     }
 }
